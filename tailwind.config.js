@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+const { colors } = require("./constants/colors");
+
 module.exports = {
   // NOTE: Update this to include the paths to all of your component files.
   content: ["./app/**/*.{js,jsx,ts,tsx}"],
@@ -6,10 +9,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "red",
-        black: "#000000",
-        background: "#363946",
-        accent: "#696773",
+        colors,
       },
     },
   },
