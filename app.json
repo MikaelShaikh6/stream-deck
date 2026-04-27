@@ -3,7 +3,7 @@
     "name": "stream-deck",
     "slug": "stream-deck",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "landscape",
     "icon": "./assets/images/icon.png",
     "scheme": "streamdeck",
     "userInterfaceStyle": "automatic",

@@ -3,6 +3,7 @@ import { colors } from "../constants/colors";
 import "./globals.css";
 
 const headerStyles = {
+  headerShown: false,
   headerStyle: {
     backgroundColor: colors.accent,
   },
