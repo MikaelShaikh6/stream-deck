@@ -7,10 +7,10 @@ import {colors} from "@/constants/colors";
 export default function Index() {
   const main_button_prop = "hover:bg-black/10 rounded-full";
   const button_text_prop = "select-none color-text text-center text-base";
-  const popup_prop_outer = "flex-1 items-center justify-center";
+  const popup_prop_outer = "flex-1 items-center justify-center pointer-events-none";
   const popup_prop_inner = "h-[80%] w-[80%] bg-blue-500 rounded-xl items-center justify-center";
   const flex_box_prop = "flox-row flex-wrap gap-2";
-  const box_prop = "w-[22%] h-24 bg-blue-700 rounded-xl";
+  const box_prop = "w-[22%] h-24 bg-blue-700 rounded-xl select-none";
 
   const [settingsVisible, setSettingsVisible] = useState(false);
   const [buttonsVisible, setButtonsVisible] = useState(false);
@@ -51,7 +51,7 @@ export default function Index() {
         </Pressable>
         <Modal transparent={true} visible={settingsVisible} onRequestClose={toggleSettings}
                className="relative flex-1 justify-center items-center">
-          <Pressable className="absolute top-2 right-5" onPress={toggleSettings}>
+          <Pressable className="absolute top-2 right-5 z-10000" onPress={toggleSettings}>
             <Text className={"red text-[30px] select-none"}>X</Text>
           </Pressable>
 
@@ -81,13 +81,30 @@ export default function Index() {
           </View>
 
           <View className={`${displayVisible ? "center" : "hidden"} ${popup_prop_outer}`}>
-            <Text>Display Button Pressed</Text>
+            <View className={`${popup_prop_inner}`}>
+              <ScrollView className="w-[50%] h-[50%] bg-amber-500">
+                <View className={`${flex_box_prop}`}>
+                  <View className={`${box_prop}`}></View>
+                  <View className={`${box_prop}`}></View>
+                  <View className={`${box_prop}`}></View>
+                  <View className={`${box_prop}`}></View>
+                </View>
+              </ScrollView>
+            </View>
           </View>
 
           <View className={`${audioVisible ? "center" : "hidden"} ${popup_prop_outer}`}>
-            <Text>Audio Button Pressed</Text>
+            <View className={`${popup_prop_inner}`}>
+              <ScrollView className="w-[50%] h-[50%] bg-amber-500">
+                <View className={`${flex_box_prop}`}>
+                  <View className={`${box_prop}`}></View>
+                  <View className={`${box_prop}`}></View>
+                  <View className={`${box_prop}`}></View>
+                  <View className={`${box_prop}`}></View>
+                </View>
+              </ScrollView>
+            </View>
           </View>
-
         </Modal>
       </SafeAreaView>
     </View>
