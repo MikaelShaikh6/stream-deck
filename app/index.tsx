@@ -12,6 +12,7 @@ export default function Index() {
   const boxProp = "w-[23%] h-24 bg-blue-700 rounded-xl select-none mb-2";
   const bottomBar = "absolute flex-box bottom-0 w-[100%] h-[10%] bg-blue-700";
   const topBar = "absolute flex-box top-0 w-[100%] h-[90%] bg-green-700";
+  const scrollPanelProp = "ml-[10%] w-[90%] bg-amber-500";
 
   const [settingsVisible, setSettingsVisible] = useState(false);
   const [buttonsVisible, setButtonsVisible] = useState(false);
@@ -58,7 +59,7 @@ export default function Index() {
         <View className={`${topBar}`}>
           <View pointerEvents="box-none" className={`${buttonsVisible ? "center" : "hidden"} ${popupOuterProp}`}>
             <View className={`${popupInnerProp}`}>
-              <ScrollView className="w-[50%] h-[50%] bg-amber-500">
+              <ScrollView className={`${scrollPanelProp}`}>
                 <View className={`${flexBoxProp}`}>
                   <View className={`${boxProp}`}></View>
                   <View className={`${boxProp}`}></View>
@@ -72,7 +73,7 @@ export default function Index() {
           <View pointerEvents="box-none"
                 className={`${displayVisible ? "center" : "hidden"} ${popupOuterProp}`}>
             <View className={`${popupInnerProp} ${"bg-purple-100"}`}>
-              <ScrollView className="w-[50%] h-[50%] bg-amber-500">
+              <ScrollView className={`${scrollPanelProp}`}>
                 <View className={`${flexBoxProp}`}>
                   <View className={`${boxProp}`}></View>
                   <View className={`${boxProp}`}></View>
@@ -85,7 +86,7 @@ export default function Index() {
 
           <View pointerEvents="box-none" className={`${audioVisible ? "center" : "hidden"} ${popupOuterProp}`}>
             <View className={`${popupInnerProp}`}>
-              <ScrollView className="w-[50%] h-[50%] bg-amber-500">
+              <ScrollView className={`${scrollPanelProp}`}>
                 <View className={`${flexBoxProp}`}>
                   <View className={`${boxProp}`}></View>
                   <View className={`${boxProp}`}></View>
