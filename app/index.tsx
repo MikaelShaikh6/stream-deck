@@ -1,6 +1,6 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
+//import Ionicons from '@expo/vector-icons/Ionicons';
 import React, {useState} from 'react';
-import {Modal, Pressable, Text, View, ScrollView} from "react-native";
+import {Pressable, Text, View, ScrollView} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 
 export default function Index() {
@@ -10,6 +10,8 @@ export default function Index() {
   const popupInnerProp = "h-[80%] w-[80%] bg-blue-500 rounded-xl items-center justify-center";
   const flexBoxProp = "flex-row flex-wrap justify-evenly p-2";
   const boxProp = "w-[23%] h-24 bg-blue-700 rounded-xl select-none mb-2";
+  const bottomBar = "absolute flex-box bottom-0 w-[100%] h-[10%] bg-blue-700";
+  const topBar = "absolute flex-box top-0 w-[100%] h-[90%] bg-green-700";
 
   const [settingsVisible, setSettingsVisible] = useState(false);
   const [buttonsVisible, setButtonsVisible] = useState(false);
@@ -41,30 +43,19 @@ export default function Index() {
   return (
     <View className="flex-1 border-4 border-accent">
       <SafeAreaView className="relative flex-1 justify-center items-center bg-background">
-        <Pressable onPress={toggleSettings}
-                   className="bg-black/10 rounded-xl absolute top-3 right-3">
-          <View>
-            <Ionicons className={settingsVisible ? "hidden" : "flex"} name="settings" size={32} color="black"/>
-          </View>
-        </Pressable>
-        <Modal transparent={true} visible={settingsVisible} onRequestClose={toggleSettings}
-               className="relative flex-1 justify-center items-center">
-          <Pressable className="absolute top-2 right-5 z-10000" onPress={toggleSettings}>
-            <Text className={"red text-[30px] select-none"}>X</Text>
+
+        <View className={`${bottomBar}`}>
+          <Pressable className={`${optionButtonProp}`} onPress={toggleButtons}>
+            <Text className={`${optionButtonTextProp}`}>Buttons</Text>
           </Pressable>
-
-          <View className="absolute bg-black/50 rounded-xl px-1 py-1 top-9 right-9 gap-1">
-            <Pressable className={`${optionButtonProp}`} onPress={toggleButtons}>
-              <Text className={`${optionButtonTextProp}`}>Buttons</Text>
-            </Pressable>
-            <Pressable className={`${optionButtonProp}`} onPress={toggleDisplay}>
-              <Text className={`${optionButtonTextProp}`}>Display</Text>
-            </Pressable>
-            <Pressable className={`${optionButtonProp}`} onPress={toggleAudio}>
-              <Text className={`${optionButtonTextProp}`}>Audio</Text>
-            </Pressable>
-          </View>
-
+          <Pressable className={`${optionButtonProp}`} onPress={toggleDisplay}>
+            <Text className={`${optionButtonTextProp}`}>Display</Text>
+          </Pressable>
+          <Pressable className={`${optionButtonProp}`} onPress={toggleAudio}>
+            <Text className={`${optionButtonTextProp}`}>Audio</Text>
+          </Pressable>
+        </View>
+        <View className={`${topBar}`}>
           <View pointerEvents="box-none" className={`${buttonsVisible ? "center" : "hidden"} ${popupOuterProp}`}>
             <View className={`${popupInnerProp}`}>
               <ScrollView className="w-[50%] h-[50%] bg-amber-500">
@@ -104,7 +95,7 @@ export default function Index() {
               </ScrollView>
             </View>
           </View>
-        </Modal>
+        </View>
       </SafeAreaView>
     </View>
   );
