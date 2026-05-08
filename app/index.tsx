@@ -1,7 +1,8 @@
 //import Ionicons from '@expo/vector-icons/Ionicons';
-import React, {useState} from 'react';
-import {Pressable, Text, View, ScrollView} from "react-native";
-import {SafeAreaView} from "react-native-safe-area-context";
+import React, { useState } from 'react';
+import { Pressable, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Popup from './popup';
 
 export default function Index() {
   const optionButtonProp = "hover:bg-black/10 rounded-20 p-1";
@@ -14,17 +15,10 @@ export default function Index() {
   const topBar = "absolute flex-box top-0 w-full h-[90%] bg-green-700";
   const scrollPanelProp = "ml-[10%] w-[90%] bg-amber-500";
 
-  const [settingsVisible, setSettingsVisible] = useState(false);
   const [buttonsVisible, setButtonsVisible] = useState(false);
   const [displayVisible, setDisplayVisible] = useState(false);
   const [audioVisible, setAudioVisible] = useState(false);
 
-  const toggleSettings = () => {
-    setAudioVisible(false);
-    setDisplayVisible(false);
-    setButtonsVisible(false);
-    setSettingsVisible(!settingsVisible);
-  };
   const toggleButtons = () => {
     setAudioVisible(false);
     setDisplayVisible(false);
@@ -46,46 +40,28 @@ export default function Index() {
       <SafeAreaView className="relative flex-1 justify-center items-center bg-background">
 
         <View className={`${topBar}`}>
-          <View pointerEvents="box-none" className={`${buttonsVisible ? "center" : "hidden"} ${popupOuterProp}`}>
-            <View className={`${popupInnerProp}`}>
-              <ScrollView className={`${scrollPanelProp}`}>
-                <View className={`${flexBoxProp}`}>
-                  <View className={`${boxProp}`}></View>
-                  <View className={`${boxProp}`}></View>
-                  <View className={`${boxProp}`}></View>
-                  <View className={`${boxProp}`}></View>
-                </View>
-              </ScrollView>
-            </View>
-          </View>
+          <Popup visible={buttonsVisible}>
+            <View className={`${boxProp}`}></View>
+            <View className={`${boxProp}`}></View>
+            <View className={`${boxProp}`}></View>
+            <View className={`${boxProp}`}></View>
+          </Popup>
 
-          <View pointerEvents="box-none"
-                className={`${displayVisible ? "center" : "hidden"} ${popupOuterProp}`}>
-            <View className={`${popupInnerProp} ${"bg-purple-100"}`}>
-              <ScrollView className={`${scrollPanelProp}`}>
-                <View className={`${flexBoxProp}`}>
-                  <View className={`${boxProp}`}></View>
-                  <View className={`${boxProp}`}></View>
-                  <View className={`${boxProp}`}></View>
-                  <View className={`${boxProp}`}></View>
-                </View>
-              </ScrollView>
-            </View>
-          </View>
+          <Popup visible={audioVisible}>
+            <View className={`${boxProp}`}></View>
+            <View className={`${boxProp}`}></View>
+            <View className={`${boxProp}`}></View>
+            <View className={`${boxProp}`}></View>
+          </Popup>
 
-          <View pointerEvents="box-none" className={`${audioVisible ? "center" : "hidden"} ${popupOuterProp}`}>
-            <View className={`${popupInnerProp}`}>
-              <ScrollView className={`${scrollPanelProp}`}>
-                <View className={`${flexBoxProp}`}>
-                  <View className={`${boxProp}`}></View>
-                  <View className={`${boxProp}`}></View>
-                  <View className={`${boxProp}`}></View>
-                  <View className={`${boxProp}`}></View>
-                </View>
-              </ScrollView>
-            </View>
-          </View>
+          <Popup visible={buttonsVisible}>
+            <View className={`${boxProp}`}></View>
+            <View className={`${boxProp}`}></View>
+            <View className={`${boxProp}`}></View>
+            <View className={`${boxProp}`}></View>
+          </Popup>
         </View>
+          
         <View className={`${bottomBar}`}>
           <View className="bg-amber-50">
             <Text>

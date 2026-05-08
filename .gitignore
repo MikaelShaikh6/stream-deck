@@ -3,6 +3,10 @@
 # dependencies
 node_modules/
 
+# Idea
+.idea/
+*.iml
+
 # Expo
 .expo/
 dist/
