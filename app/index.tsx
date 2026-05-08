@@ -54,7 +54,7 @@ export default function Index() {
             <View className={`${boxProp}`}></View>
           </Popup>
 
-          <Popup visible={buttonsVisible}>
+          <Popup visible={displayVisible}>
             <View className={`${boxProp}`}></View>
             <View className={`${boxProp}`}></View>
             <View className={`${boxProp}`}></View>
