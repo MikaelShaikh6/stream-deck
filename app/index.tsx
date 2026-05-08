@@ -9,7 +9,7 @@ export default function Index() {
   const popupOuterProp = "flex-1 items-center justify-center";
   const popupInnerProp = "h-[80%] w-[80%] bg-blue-500 rounded-xl items-center justify-center";
   const flexBoxProp = "flex-row flex-wrap justify-evenly p-2";
-  const boxProp = "w-[23%] h-24 bg-blue-700 rounded-xl select-none mb-2";
+  const boxProp = "w-[154px] h-[96px] aspect-square bg-blue-700 rounded-xl select-none mb-2";
   const bottomBar = "absolute flex-box bottom-0 w-[100%] h-[10%] bg-blue-700";
   const topBar = "absolute flex-box top-0 w-[100%] h-[90%] bg-green-700";
   const scrollPanelProp = "ml-[10%] w-[90%] bg-amber-500";
