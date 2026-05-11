@@ -1,15 +1,15 @@
 //import Ionicons from '@expo/vector-icons/Ionicons';
-import React, { useState } from 'react';
-import { Pressable, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React, {useState} from 'react';
+import {Pressable, Text, View} from "react-native";
+import {SafeAreaView} from "react-native-safe-area-context";
 import Popup from './popup';
 
 export default function Index() {
-  const optionButtonProp = "hover:bg-black/10 rounded-20 p-1";
+  const optionButtonProp = "hover:bg-black/10";
   const optionButtonTextProp = "select-none color-text text-center text-base";
-  const boxProp = "w-[154px] h-[96px] aspect-square bg-blue-700 rounded-xl select-none mb-2";
-  const bottomBar = "absolute bottom-0 flex-row items-center justify-between px-4 bottom-0 w-full h-[10%] bg-blue-700";
-  const topBar = "absolute flex-box top-0 w-full h-[90%] bg-green-700";
+  const boxProp = "w-[154px] h-[96px] bg-blue-700 select-none aspect-square rounded-xl mb-2";
+  const bottomBar = "w-full h-[10%] bg-blue-700";
+  const topBar = "w-full h-[90%] bg-green-700";
 
   const [buttonsVisible, setButtonsVisible] = useState(false);
   const [displayVisible, setDisplayVisible] = useState(false);
@@ -35,7 +35,7 @@ export default function Index() {
     <View className="flex-1 border-4 border-accent">
       <SafeAreaView className="relative flex-1 justify-center items-center bg-background">
 
-        <View className={`${topBar}`}>
+        <View className={`${topBar} ${"flex-box absolute top-0"}`}>
           <Popup visible={buttonsVisible}>
             <View className={`${boxProp}`}></View>
             <View className={`${boxProp}`}></View>
@@ -57,21 +57,21 @@ export default function Index() {
             <View className={`${boxProp}`}></View>
           </Popup>
         </View>
-          
-        <View className={`${bottomBar}`}>
+
+        <View className={`${bottomBar} ${"absolute bottom-0 flex-row items-center justify-between px-4"}`}>
           <View className="bg-amber-50">
             <Text>
               Hello world
             </Text>
           </View>
           <View className="flex-row gap-5">
-            <Pressable className={`${optionButtonProp}`} onPress={toggleButtons}>
+            <Pressable className={`${optionButtonProp} ${"rounded-20 p-1"}`} onPress={toggleButtons}>
               <Text className={`${optionButtonTextProp}`}>Buttons</Text>
             </Pressable>
-            <Pressable className={`${optionButtonProp}`} onPress={toggleDisplay}>
+            <Pressable className={`${optionButtonProp} ${"rounded-20 p-1"}`} onPress={toggleDisplay}>
               <Text className={`${optionButtonTextProp}`}>Display</Text>
             </Pressable>
-            <Pressable className={`${optionButtonProp}`} onPress={toggleAudio}>
+            <Pressable className={`${optionButtonProp} ${"rounded-20 p1"}`} onPress={toggleAudio}>
               <Text className={`${optionButtonTextProp}`}>Audio</Text>
             </Pressable>
           </View>
