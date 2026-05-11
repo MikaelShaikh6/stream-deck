@@ -72,7 +72,8 @@ export default function Index() {
               Hello world
             </Text>
           </View>
-          <View className="flex-row gap-5">
+
+          <View id="bottom bar" className="flex-row items-center gap-5">
             <Pressable className={`${optionButtonProp} ${"rounded-20 p-1"}`} onPress={toggleButtons}>
               <Text className={`${optionButtonTextProp}`}>Buttons</Text>
             </Pressable>
