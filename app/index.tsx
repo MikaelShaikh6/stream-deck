@@ -42,6 +42,15 @@ export default function Index() {
     setAudioMuted(!audioMuted);
   }
 
+  let volumeUp = () => {
+  }
+  let volumeDown = () => {
+  }
+  let skipForward = () => {
+  }
+  let skipBackward = () => {
+  }
+
   return (
     <View className="flex-1 border-4 border-accent">
       <SafeAreaView className="relative flex-1 justify-center items-center bg-background">
@@ -51,7 +60,7 @@ export default function Index() {
           </Popup>
 
           <Popup visible={audioVisible}>
-            <GeneralButton id={"mute button"} triggerMute={triggerMute}>
+            <GeneralButton id={"mute button"} func={triggerMute}>
               <View className={audioMuted ? "hidden select-none" : "visible select-none"}>
                 <Text className={"select-none"}>Audio is not muted</Text>
               </View>
@@ -59,6 +68,10 @@ export default function Index() {
                 <Text>Audio is muted</Text>
               </View>
             </GeneralButton>
+            <GeneralButton id={"increase volume"} func={volumeUp}></GeneralButton>
+            <GeneralButton id={"decrease volume"} func={volumeDown}></GeneralButton>
+            <GeneralButton id={"skip forward"} func={skipForward}></GeneralButton>
+            <GeneralButton id={"skip backward"} func={skipBackward}></GeneralButton>
           </Popup>
 
           <Popup visible={displayVisible}>
