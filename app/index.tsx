@@ -59,21 +59,10 @@ export default function Index() {
                 <Text>Audio is muted</Text>
               </View>
             </GeneralButton>
-            <View className={`${boxProp}`}>
-
-            </View>
-            <View className={`${boxProp}`}>
-
-            </View>
-            <View className={`${boxProp}`}></View>
-            <View className={`${boxProp}`}></View>
           </Popup>
 
           <Popup visible={displayVisible}>
-            <View className={`${boxProp}`}></View>
-            <View className={`${boxProp}`}></View>
-            <View className={`${boxProp}`}></View>
-            <View className={`${boxProp}`}></View>
+            <View></View>
           </Popup>
         </View>
 

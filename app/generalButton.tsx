@@ -11,13 +11,13 @@ type GeneralButtonProps = {
 export default function GeneralButton({
                                         id,
                                         triggerMute,
-                                        boxProp = "w-[154px] h-[96px] bg-blue-700 select-none aspect-square rounded-xl mb-2 justify-center items-center",
+                                        boxProp = "w-[154px] h-[96px] bg-accent select-none aspect-square rounded-xl mb-2 justify-center items-center",
                                         children,
                                       }: GeneralButtonProps) {
 
   return (
-    <View id={id} className={`${boxProp}`}>
-      <Pressable onPress={triggerMute}>
+    <View id={id}>
+      <Pressable onPress={triggerMute} className={`${boxProp}`}>
         {children}
       </Pressable>
     </View>
