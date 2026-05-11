@@ -1,6 +1,7 @@
 //import Ionicons from '@expo/vector-icons/Ionicons';
 import React, {useState} from 'react';
 import {Pressable, Text, View} from "react-native";
+import Slider from '@react-native-community/slider';
 import {SafeAreaView} from "react-native-safe-area-context";
 import Popup from './popup';
 import GeneralButton from "./generalButton"
@@ -8,13 +9,13 @@ import GeneralButton from "./generalButton"
 export default function Index() {
   const optionButtonProp = "hover:bg-black/10";
   const optionButtonTextProp = "select-none color-text text-center text-base";
-  const boxProp = "w-[154px] h-[96px] bg-blue-700 select-none aspect-square rounded-xl mb-2";
   const bottomBar = "w-full h-[10%] bg-accent";
   const topBar = "w-full h-[90%] bg-background";
 
   const [buttonsVisible, setButtonsVisible] = useState(false);
   const [displayVisible, setDisplayVisible] = useState(false);
   const [audioVisible, setAudioVisible] = useState(false);
+  const [volume, setVolume] = useState(0.5);
   let [audioMuted, setAudioMuted] = useState(false); // TODO: This shouldn't be here, if it is it needs to reflect system audio
 
   const toggleButtons = () => {
@@ -43,12 +44,16 @@ export default function Index() {
   }
 
   let volumeUp = () => {
+    console.log("volume up");
   }
   let volumeDown = () => {
+    console.log("volume down");
   }
   let skipForward = () => {
+    console.log("skip forward");
   }
   let skipBackward = () => {
+    console.log("skip backward");
   }
 
   return (
@@ -68,12 +73,31 @@ export default function Index() {
                 <Text>Audio is muted</Text>
               </View>
             </GeneralButton>
-            <GeneralButton id={"increase volume"} func={volumeUp}></GeneralButton>
-            <GeneralButton id={"decrease volume"} func={volumeDown}></GeneralButton>
-            <GeneralButton id={"skip forward"} func={skipForward}></GeneralButton>
-            <GeneralButton id={"skip backward"} func={skipBackward}></GeneralButton>
+            <GeneralButton id={"increase volume"} func={volumeUp}>
+              <Text className={"select-none"}>Increase vol</Text>
+            </GeneralButton>
+            <GeneralButton id={"decrease volume"} func={volumeDown}>
+              <Text className={"select-none"}>Decrease volume</Text>
+            </GeneralButton>
+            <GeneralButton id={"skip forward"} func={skipForward}>
+              <Text className={"select-none"}>skip forward</Text>
+            </GeneralButton>
+            <GeneralButton id={"skip backward"} func={skipBackward}>
+              <Text className={"select-none"}>skip backwards</Text>
+            </GeneralButton>
+            <View className="w-[308px] h-[96px] flex-1 justify-center items-center rounded-xl bg-green-100">
+              <Slider
+                style={{width: '90%', height: 5,}}
+                minimumValue={0}
+                maximumValue={1}
+                value={volume}
+                onValueChange={(val) => setVolume(val)}
+                minimumTrackTintColor={"grey"}
+                maximumTrackTintColor={"purple"}
+                thumbTintColor={"blue"}
+              />
+            </View>
           </Popup>
-
           <Popup visible={displayVisible}>
             <View></View>
           </Popup>

@@ -21,7 +21,7 @@ export default function Popup({
   return (
     <View pointerEvents="box-none" className={`center ${outerClass}`}>
       <View className={innerClass}>
-        <ScrollView className={scrollClass}>
+        <ScrollView className={scrollClass} horizontal={false}>
           <View className="flex-row flex-wrap gap-x-5 gap-y-2 p-3">
             {children}
           </View>
