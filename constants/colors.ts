@@ -1,8 +1,9 @@
 export const colors = {
-  background: "#363946",
-  accent: "#696773",
-  text: "#B1B6A6",
-  textHovered: "#989f8A",
-  secondaryText: "#819595",
-  optionsMenu: "#000000/50",
+  background: "#202030",
+  accent: "#39304A",
+  text: "#B0A990",
+  textHovered: "#7D7461",
+  secondaryText: "#635C51",
+  optionsMenu: "#39304A",
+  bottomBar: "#",
 };
