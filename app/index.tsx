@@ -1,10 +1,10 @@
 //import Ionicons from '@expo/vector-icons/Ionicons';
 import React, {useState} from 'react';
-import {Pressable, Text, View} from "react-native";
-import Slider from '@react-native-community/slider';
-import {SafeAreaView} from "react-native-safe-area-context";
+import {Pressable, Text, View} from 'react-native';
+import MySlider from './slider'
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Popup from './popup';
-import GeneralButton from "./generalButton"
+import GeneralButton from './generalButton'
 
 export default function Index() {
   const optionButtonProp = "hover:bg-black/10";
@@ -85,32 +85,9 @@ export default function Index() {
             <GeneralButton id={"skip backward"} func={skipBackward}>
               <Text className={"select-none"}>skip backwards</Text>
             </GeneralButton>
-            <View className="w-[308px] h-[96px] flex-1 justify-center items-center rounded-xl bg-accent">
-              <Text className="mb-4">Volume Control</Text>
-              <Slider
-                style={{width: '90%', height: 5,}}
-                minimumValue={0}
-                maximumValue={1}
-                value={volume}
-                onValueChange={(val) => setVolume(val)}
-                minimumTrackTintColor={"grey"}
-                maximumTrackTintColor={"purple"}
-                thumbTintColor={"blue"}
-              />
-            </View>
 
-            <View className="w-[154px] h-[192px] flex-1 justify-center items-center rounded-xl bg-accent">
-              <Slider
-                style={{width: '90%', height: 5, transform: [{rotate: '-90deg'}]}}
-                minimumValue={0}
-                maximumValue={1}
-                value={volume}
-                onValueChange={(val) => setVolume(val)}
-                minimumTrackTintColor={"grey"}
-                maximumTrackTintColor={"purple"}
-                thumbTintColor={"blue"}
-              />
-            </View>
+            <MySlider id={"volume slider"} label={"volume slider"} currValue={volume} setTo={setVolume} vert={false}/>
+
           </Popup>
           <Popup visible={displayVisible}>
             <View></View>

@@ -11,7 +11,8 @@ type GeneralButtonProps = {
 export default function GeneralButton({
                                         id,
                                         func,
-                                        boxProp = "w-[154px] h-[96px] bg-accent select-none aspect-square rounded-xl mb-2 justify-center items-center",
+                                        boxProp = "w-[154px] h-[96px] bg-accent select-none aspect-square rounded-xl mb-2 justify-center items-center border-2 border-blue",
+
                                         children,
                                       }: GeneralButtonProps) {
 
