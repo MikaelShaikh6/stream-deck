@@ -12,7 +12,7 @@ type PopupProps = {
 export default function Popup({
                                 visible,
                                 outerClass = "flex-1 items-center justify-center",
-                                innerClass = "h-[80%] w-[80%] bg-blue-500 rounded-xl items-center justify-center",
+                                innerClass = "h-[80%] w-[80%] bg-accent rounded-xl items-center justify-center",
                                 scrollClass = "ml-[10%] w-[90%] bg-amber-500",
                                 children,
                               }: PopupProps) {
