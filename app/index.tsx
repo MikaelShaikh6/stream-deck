@@ -1,6 +1,6 @@
 //import Ionicons from '@expo/vector-icons/Ionicons';
 import React, {useState} from 'react';
-import {Pressable, Text, View} from 'react-native';
+import {FlatList, Pressable, Text, useWindowDimensions, View} from 'react-native';
 import MySlider from './slider'
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Popup from './popup';
@@ -10,88 +10,110 @@ export default function Index() {
   const optionButtonProp = "hover:bg-black/10";
   const optionButtonTextProp = "select-none color-text text-center text-base";
   const bottomBar = "w-full h-[10%] bg-accent";
-  const topBar = "w-full h-[90%] bg-background";
+  const topBar = "w-full bg-background";
 
   const [buttonsVisible, setButtonsVisible] = useState(false);
   const [displayVisible, setDisplayVisible] = useState(false);
   const [audioVisible, setAudioVisible] = useState(false);
-  const [volume, setVolume] = useState(0.5);
-  let [audioMuted, setAudioMuted] = useState(false); // TODO: This shouldn't be here, if it is it needs to reflect system audio
+  const [gridHeight, setGridHeight] = useState(0);
+  const [gridWidth, setGridWidth] = useState(0);
+  const [buttonsDisabled, setButtonsDisabled] = useState(true);
+
+  const BUTTON_WIDTH = 156;
+  const BUTTON_HEIGHT = 96;
+  const GAP = 24; // gap-6
+  const numColumns = Math.max(1, Math.floor((gridWidth + GAP) / (BUTTON_WIDTH + GAP)));
+  const numRows = Math.max(1, Math.floor((gridHeight + GAP) / (BUTTON_HEIGHT + GAP)));
+
+  const buttons = Array.from({length: numRows * numColumns}, (_, i) => `Btn ${i + 1}`);
+
+  const toggleDisableGridButtons = () => { // Wrapper function
+    setButtonsDisabled(!buttonsDisabled);
+    setAudioVisible(false);
+    setDisplayVisible(false);
+    setButtonsVisible(false);
+  }
 
   const toggleButtons = () => {
     setAudioVisible(false);
     setDisplayVisible(false);
     setButtonsVisible(!buttonsVisible);
   }
+
   const toggleDisplay = () => {
     setButtonsVisible(false);
     setAudioVisible(false);
     setDisplayVisible(!displayVisible);
   }
+
   const toggleAudio = () => {
     setButtonsVisible(false);
     setDisplayVisible(false);
     setAudioVisible(!audioVisible);
   }
-  let triggerMute = () => {
-    // TODO: This function once desktop app is set up, currently nothing should happen;
-    if (!audioMuted) {
-      console.log("Audio is muted");
-    } else {
-      console.log("Audio is unmuted");
-    }
-    setAudioMuted(!audioMuted);
+
+  const dict: Record<number, () => void> = {};
+
+  const toggleMute = () => {
+    console.log("toggleMute");
   }
 
-  let volumeUp = () => {
-    console.log("volume up");
-  }
-  let volumeDown = () => {
-    console.log("volume down");
-  }
-  let skipForward = () => {
-    console.log("skip forward");
-  }
-  let skipBackward = () => {
-    console.log("skip backward");
-  }
+  const process = (run?: () => void) => {
+    if (run)
+      run();
+  };
 
+  let currFunc = () => {
+  };
+
+  // @ts-ignore
   return (
     <View className="flex-1 border-4 border-accent">
       <SafeAreaView className="relative flex-1 justify-center items-center bg-background">
-        <View className={`${topBar} ${"flex-box absolute top-0"}`}>
+
+        <View
+          className={`${topBar} ${"absolute top-0 h-[90%] overflow-hidden"}`}>
+          <View id={"main grid"}
+                className={`${!buttonsVisible && !audioVisible && !displayVisible ? "flex-1" : "hidden"} ${"justify-center items-center"}`}
+                onLayout={(e) => {
+                  setGridHeight(e.nativeEvent.layout.height);
+                  setGridWidth(e.nativeEvent.layout.width);
+                }}
+          >
+            <View
+              className={"flex-row flex-wrap gap-x-8 gap-y-4 justify-center items-center overflow-hidden select-none"}>
+              {
+                buttons.map((btn, index) => {
+                  dict[index] = process;
+                  return (
+                    <GeneralButton disabled={buttonsDisabled} func={() => {
+                      dict[index] = currFunc;
+                      toggleDisableGridButtons();
+                    }} key={index}/>
+                  );
+                })}
+            </View>
+          </View>
+
           <Popup visible={buttonsVisible}>
-            <View></View>
+            <GeneralButton func={
+              () => {
+                toggleDisableGridButtons();
+                currFunc = toggleMute;
+              }}>
+            </GeneralButton>
           </Popup>
 
           <Popup visible={audioVisible}>
-            <GeneralButton id={"mute button"} func={triggerMute}>
-              <View className={audioMuted ? "hidden select-none" : "visible select-none"}>
-                <Text className={"select-none"}>Audio is not muted</Text>
-              </View>
-              <View className={audioMuted ? "visible select-none" : "hidden select-none"}>
-                <Text>Audio is muted</Text>
-              </View>
+            <GeneralButton func={toggleDisableGridButtons}>
             </GeneralButton>
-            <GeneralButton id={"increase volume"} func={volumeUp}>
-              <Text className={"select-none"}>Increase vol</Text>
-            </GeneralButton>
-            <GeneralButton id={"decrease volume"} func={volumeDown}>
-              <Text className={"select-none"}>Decrease volume</Text>
-            </GeneralButton>
-            <GeneralButton id={"skip forward"} func={skipForward}>
-              <Text className={"select-none"}>skip forward</Text>
-            </GeneralButton>
-            <GeneralButton id={"skip backward"} func={skipBackward}>
-              <Text className={"select-none"}>skip backwards</Text>
-            </GeneralButton>
-
-            <MySlider id={"volume slider"} label={"volume slider"} currValue={volume} setTo={setVolume} vert={false}/>
-
           </Popup>
+
           <Popup visible={displayVisible}>
-            <View></View>
+            <GeneralButton func={toggleDisableGridButtons}>
+            </GeneralButton>
           </Popup>
+
         </View>
 
         <View className={`${bottomBar} ${"absolute bottom-0 flex-row items-center justify-between px-4"}`}>
@@ -117,6 +139,7 @@ export default function Index() {
             <Text>Hello world 2</Text>
           </View>
         </View>
+
       </SafeAreaView>
     </View>
   );
