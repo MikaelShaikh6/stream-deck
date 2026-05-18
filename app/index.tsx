@@ -1,7 +1,6 @@
 //import Ionicons from '@expo/vector-icons/Ionicons';
 import React, {useState} from 'react';
-import {FlatList, Pressable, Text, useWindowDimensions, View} from 'react-native';
-import MySlider from './slider'
+import {Pressable, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Popup from './popup';
 import GeneralButton from './generalButton'
