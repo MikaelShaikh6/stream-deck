@@ -53,11 +53,8 @@ export default function Index() {
     setAudioVisible(!audioVisible);
   }
 
-  const toggleMute = () => {
-    console.log("toggleMute");
-  }
+  const [newButton, setNewButton] = useState("");
 
-  // @ts-ignore
   return (
     <View className="flex-1 border-4 border-accent">
       <SafeAreaView className="relative flex-1 justify-center items-center bg-background">
@@ -76,14 +73,20 @@ export default function Index() {
               {
                 buttons.map((btn, index) => {
                   return (
-                    <GeneralButton id={"main_grid_button"} disabled={gridButtonsDisabled} key={index}/>
+                    <GeneralButton id={"main_grid_button"} disabled={gridButtonsDisabled} key={index}
+                                   onPress={() => {
+                                     toggleDisableGridButtons();
+                                   }} button={newButton}/>
                   );
                 })}
             </View>
           </View>
 
           <Popup visible={buttonsVisible}>
-            <GeneralButton id={"popup_button"} onPress={toggleDisableGridButtons}></GeneralButton>
+            <GeneralButton id={"popup_button"} onPress={() => {
+              setNewButton("mute_button");
+              toggleDisableGridButtons();
+            }}></GeneralButton>
           </Popup>
 
           <Popup visible={audioVisible}>
