@@ -17,7 +17,7 @@ export default function Index() {
   const [audioVisible, setAudioVisible] = useState(false);
   const [gridHeight, setGridHeight] = useState(0);
   const [gridWidth, setGridWidth] = useState(0);
-  const [buttonsDisabled, setButtonsDisabled] = useState(true);
+  const [gridButtonsDisabled, setGridButtonsDisabled] = useState(true);
 
   const BUTTON_WIDTH = 156;
   const BUTTON_HEIGHT = 96;
@@ -28,7 +28,8 @@ export default function Index() {
   const buttons = Array.from({length: numRows * numColumns}, (_, i) => `Btn ${i + 1}`);
 
   const toggleDisableGridButtons = () => { // Wrapper function
-    setButtonsDisabled(!buttonsDisabled);
+    console.log("Grid disabled");
+    setGridButtonsDisabled(!gridButtonsDisabled);
     setAudioVisible(false);
     setDisplayVisible(false);
     setButtonsVisible(false);
@@ -52,19 +53,9 @@ export default function Index() {
     setAudioVisible(!audioVisible);
   }
 
-  const dict: Record<number, () => void> = {};
-
   const toggleMute = () => {
     console.log("toggleMute");
   }
-
-  const process = (run?: () => void) => {
-    if (run)
-      run();
-  };
-
-  let currFunc = () => {
-  };
 
   // @ts-ignore
   return (
@@ -84,34 +75,21 @@ export default function Index() {
               className={"flex-row flex-wrap gap-x-8 gap-y-4 justify-center items-center overflow-hidden select-none"}>
               {
                 buttons.map((btn, index) => {
-                  dict[index] = process;
                   return (
-                    <GeneralButton disabled={buttonsDisabled} func={() => {
-                      dict[index] = currFunc;
-                      toggleDisableGridButtons();
-                    }} key={index}/>
+                    <GeneralButton id={"main_grid_button"} disabled={gridButtonsDisabled} key={index}/>
                   );
                 })}
             </View>
           </View>
 
           <Popup visible={buttonsVisible}>
-            <GeneralButton func={
-              () => {
-                toggleDisableGridButtons();
-                currFunc = toggleMute;
-              }}>
-            </GeneralButton>
+            <GeneralButton id={"popup_button"} onPress={toggleDisableGridButtons}></GeneralButton>
           </Popup>
 
           <Popup visible={audioVisible}>
-            <GeneralButton func={toggleDisableGridButtons}>
-            </GeneralButton>
           </Popup>
 
           <Popup visible={displayVisible}>
-            <GeneralButton func={toggleDisableGridButtons}>
-            </GeneralButton>
           </Popup>
 
         </View>

@@ -1,0 +1,26 @@
+import React, {ReactNode} from 'react';
+import {Pressable, View} from 'react-native';
+
+type Props = {
+  id?: string;
+  onPress?: () => void;
+  disabled?: boolean;
+  boxProp?: string;
+  children?: ReactNode;
+}
+
+export function Button({
+                         id,
+                         disabled = false,
+                         onPress,
+                         boxProp = "w-[154px] h-[96px] flex-grow bg-accent select-none aspect-square rounded-xl mb-2 justify-center items-center border-2 border-blue overflow-clip",
+                         children,
+                       }: Props) {
+  return (
+    <View id={id}>
+      <Pressable disabled={disabled} className={`${boxProp}`} onPress={onPress}>
+        {children}
+      </Pressable>
+    </View>
+  );
+}

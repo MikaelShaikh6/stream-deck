@@ -1,40 +1,52 @@
 import React, {ReactNode, useState} from 'react';
 import {TextInput, View, Pressable} from 'react-native';
+import {Button} from './button'
 
 type GeneralButtonProps = {
-  func?: (bool?: boolean) => unknown;
-  id?: string;
+  id: string;
   boxProp?: string;
+  onPress?: () => void;
+  button?: string;
   disabled?: boolean;
   children?: ReactNode;
 };
 
 export default function GeneralButton({
                                         id,
-                                        func,
                                         disabled = false,
-                                        boxProp = "w-[154px] h-[96px] flex-grow bg-accent select-none aspect-square rounded-xl mb-2 justify-center items-center border-2 border-blue overflow-clip",
+                                        boxProp,
+                                        onPress,
                                         children,
+                                        button,
                                       }: GeneralButtonProps) {
 
+  const [currId, setCurrId] = useState(id);
+  const [firstTime, setFirstTime] = useState(false);
 
-  let [enabled, setEnabled] = useState(false);
-
-  const buttonEnabled = () => {
-    setEnabled(true);
-  }
-  const functions = () => {
-    if (func)
-      func(enabled);
-    buttonEnabled();
-    console.log("pressed");
-  }
-
-  return (
-    <View id={id}>
-      <Pressable disabled={!enabled ? disabled : false} onPress={functions} className={`${boxProp}`}>
+  if (currId === "main_grid_button") {
+    return (
+      <Button
+        id={currId}
+        disabled={(disabled && !firstTime)}
+        onPress={
+          () => {
+            console.log(disabled, !firstTime);
+            setFirstTime(true);
+            if (onPress)
+              onPress();
+            if (button)
+              setCurrId(button);
+            console.log(`pressed, ${button}`);
+            console.log(disabled, !firstTime);
+          }}>
         {children}
-      </Pressable>
-    </View>
-  );
+      </Button>
+    );
+  } else if (id === "popup_button") {
+    return (
+      <Button id={currId} onPress={onPress}>
+        {children}
+      </Button>
+    );
+  }
 }
