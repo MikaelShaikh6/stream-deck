@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5a51b5f7-fd22-4d47-b0d7-8e8c54559f33" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Electron-app/Stream-deck/electron/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/Electron-app/Stream-deck/electron/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/React-native app/app/generalButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/React-native app/app/generalButton.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/React-native app/app/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/React-native app/app/index.tsx" afterDir="false" />
     </list>
@@ -25,7 +26,7 @@
     <option name="myRunOnSave" value="true" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/React-native app" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="ProjectErrors" />
@@ -46,7 +47,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "javascript.nodejs.core.library.configured.version": "24.12.0",
     "javascript.nodejs.core.library.typings.version": "24.12.4",
@@ -109,7 +110,7 @@
       <workItem from="1779211901732" duration="6398000" />
       <workItem from="1779241220837" duration="1499000" />
       <workItem from="1779242750577" duration="116000" />
-      <workItem from="1779242873264" duration="816000" />
+      <workItem from="1779242873264" duration="1626000" />
     </task>
     <servers />
   </component>
