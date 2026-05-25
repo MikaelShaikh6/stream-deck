@@ -1,6 +1,6 @@
-import React, {ReactNode, useState} from 'react';
-import {Text} from 'react-native';
-import {Button} from './button';
+import React, { ReactNode } from "react";
+import { Text } from "react-native";
+import { Button } from "./button";
 
 type GeneralButtonProps = {
   id: string;
@@ -12,52 +12,56 @@ type GeneralButtonProps = {
 };
 
 export default function GeneralButton({
-                                        id,
-                                        disabled = false,
-                                        boxProp,
-                                        onPress,
-                                        children,
-                                        button,
-                                      }: GeneralButtonProps) {
-
-  const [currId, setCurrId] = useState(id);
-  const [idChanged, setIdChanged] = useState(false);
-  const [beenPressed, setBeenPressed] = useState(false);
-
-  if (currId === "main_grid_button") {
+  id,
+  disabled = false,
+  boxProp,
+  onPress,
+  children,
+  button,
+}: GeneralButtonProps) {
+  if (id === "main_grid_button") {
     console.log("made here");
     return (
       <Button
-        id={currId}
-        disabled={(disabled && !beenPressed)}
-        onPress={
-          () => {
-            console.log(currId, button);
-            if (onPress)
-              onPress();
-            if (button && !idChanged) {
-              setIdChanged(true);
-              setCurrId(button);
-            }
-            setBeenPressed(true);
-          }}>
-        {children}
-      </Button>
-    )
-  } else if (currId === "popup_button") {
-    return (
-      <Button id={currId} onPress={onPress}>
+        id={id}
+        disabled={disabled}
+        onPress={() => {
+          console.log(id, button);
+          if (onPress) onPress();
+        }}
+      >
         {children}
       </Button>
     );
-  } else if (currId === "mute_button") {
+  } else if (id === "popup_button") {
     return (
-      <Button id={currId} onPress={() => {
-        console.log("this is a mute mutton");
-      }}>
+      <Button id={id} onPress={onPress}>
+        {children}
+      </Button>
+    );
+  } else if (id === "mute_button") {
+    return (
+      <Button
+        id={id}
+        onPress={() => {
+          console.log("this is a mute mutton");
+        }}
+      >
         <Text>Hello world</Text>
         {children}
       </Button>
-    )
+    );
+  } else if (id === "deafen_button") {
+    return (
+      <Button
+        id={id}
+        onPress={() => {
+          console.log("this is a deafen button");
+        }}
+      >
+        <Text>This is a deafen button</Text>
+        {children}
+      </Button>
+    );
   }
 }
