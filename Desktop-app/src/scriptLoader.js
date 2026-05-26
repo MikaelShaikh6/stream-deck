@@ -1,31 +1,36 @@
 const { spawn } = require("child_process");
 const { scripts } = require("./scripts");
-
+const { app } = require("electron");
 const path = require("path");
-const scriptPath = path.join(__dirname, "../src/pythonScripts/");
+const { postMessageToThread } = require("worker_threads");
 
 function run(scriptName, args = []) {
   return new Promise((resolve, reject) => {
-    const myPath = [path.join(scriptPath, scripts[scriptName]), ...args];
-    let pyout = spawn("python", myPath);
-    let res = "";
+    const scriptPath = path.join(
+      process.cwd(),
+      "src",
+      "pythonScripts",
+      scripts[scriptName],
+    );
+
+    let pyout = spawn("python", [scriptPath, ...args]);
 
     pyout.stdout.on("data", (data) => {
       if (data) {
-        //console.log(`Data: ${data}`);
+        console.log(`Data: ${data}`);
         resolve(data.toString());
       }
     });
 
-    pyout.stderr.on("data", () => {
-      //console.error(`stderr: ${data}`);
-      reject(-1);
+    pyout.stderr.on("data", (data) => {
+      console.error(`stderr: ${data}`);
     });
 
     pyout.on("close", (code) => {
-      //console.log(`Closed with code: ${code}`);
+      console.log(`Closed with code: ${code}`);
       if (code !== 0) {
-        reject("exited with code:", code);
+        console.log("code was rejected");
+        reject(new Error("exited with code:", code));
       }
     });
   });

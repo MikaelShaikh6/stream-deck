@@ -8,15 +8,20 @@ const { scripts } = require("./scripts");
 const server = http.createServer();
 const wsServer = new WebSocketServer({ server });
 
-const port = 8000;
 const connections = {};
 const users = {};
+const getRand = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
 
-function getIp() {
-  return runScript("getip");
+let PORT = getRand(1000, 9999);
+let IP = "";
+
+function getInfo() {
+  console.log(`Made inside get info, PORT: ${PORT}, IP: ${IP}`);
+  return { PORT, IP };
 }
 
-let returnedData;
 function handleMessage(msg) {
   const data = JSON.parse(msg.toString());
 
@@ -25,7 +30,9 @@ function handleMessage(msg) {
   }
 }
 
-function connection() {
+async function connection() {
+  IP = (await runScript("getIp")).trim();
+
   wsServer.on("connection", (connection, request) => {
     const { username } = url.parse(request.url, true).query;
 
@@ -51,9 +58,9 @@ function connection() {
       delete users[uuid];
     });
   });
-  server.listen(port, () => {
-    console.log(`Websocket server is running on port: ${port}`);
+  server.listen(PORT, () => {
+    console.log(`Websocket server is running on port: ${PORT}`);
   });
 }
 
-module.exports = { connection };
+export { connection, getInfo };

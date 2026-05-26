@@ -1,9 +1,31 @@
-const getRand = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1) + min);
+import { useEffect, useState } from "react";
+
+const loadInfo = async () => {
+  const info = await window.api.getWSInfo();
+
+  setPort(info.PORT);
+  setIp(info.IP);
 };
 
-const port = getRand(1000, 9999);
+loadInfo();
 
 export default function App() {
-  return <h1>{port}</h1>;
+  const [port, setPort] = useState(0);
+  const [ip, setIp] = useState("");
+
+  useEffect(() => {
+    const loadInfo = async () => {
+      const info = await window.api.getWSInfo();
+      setPort(info.PORT);
+      setIp(info.IP);
+    };
+
+    loadInfo();
+  }, []);
+
+  return (
+    <h1>
+      Enter this link: ws://{ip}:{port}
+    </h1>
+  );
 }
