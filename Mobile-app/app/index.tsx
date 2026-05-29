@@ -1,8 +1,10 @@
+// Imports that might become necessary but curr not
 //import Ionicons from '@expo/vector-icons/Ionicons';
+//import WebSocket from "ws";
+
 import React, { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-//import WebSocket from "ws";
 import GeneralButton from "./generalButton";
 import Popup from "./popup";
 
@@ -38,7 +40,6 @@ export default function Index() {
   );
 
   const toggleDisableGridButtons = () => {
-    // Wrapper function
     setGridButtonsDisabled(!gridButtonsDisabled);
     setAudioVisible(false);
     setDisplayVisible(false);

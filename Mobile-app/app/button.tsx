@@ -2,13 +2,14 @@ import React, { ReactNode } from "react";
 import { Pressable, View } from "react-native";
 
 type Props = {
-  id?: string;
+  id: string;
   onPress?: () => void;
   disabled?: boolean;
   boxProp?: string;
   children?: ReactNode;
 };
 
+// TODO: Sizing for boxes may be incorrect on mobile devices, should be tested
 export function Button({
   id,
   disabled = false,

@@ -29,6 +29,7 @@ export default function GeneralButton({
     }
   }
 
+  // Yes, this is probably not the best designed, but it works, and gets it done,
   if (id === "main_grid_button") {
     console.log("made here");
     return (

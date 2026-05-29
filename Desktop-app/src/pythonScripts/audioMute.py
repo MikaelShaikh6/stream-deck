@@ -1,6 +1,5 @@
 # Mute System Audio
 
-
 from pycaw.pycaw import AudioUtilities
 
 def mute_audio():
