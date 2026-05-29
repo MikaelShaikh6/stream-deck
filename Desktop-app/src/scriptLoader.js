@@ -2,7 +2,6 @@ const { spawn } = require("child_process");
 const { scripts } = require("./scripts");
 const { app } = require("electron");
 const path = require("path");
-const { postMessageToThread } = require("worker_threads");
 
 function run(scriptName, args = []) {
   return new Promise((resolve, reject) => {

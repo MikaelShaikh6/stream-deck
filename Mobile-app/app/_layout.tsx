@@ -1,5 +1,6 @@
-import {Stack} from "expo-router";
-import {colors} from "../constants/colors";
+import { Stack } from "expo-router";
+import React from "react";
+import { colors } from "../constants/colors";
 import "./globals.css";
 
 const headerStyles = {
@@ -12,5 +13,5 @@ const headerStyles = {
 };
 
 export default function RootLayout() {
-  return <Stack screenOptions={headerStyles}/>;
+  return <Stack screenOptions={headerStyles} />;
 }
