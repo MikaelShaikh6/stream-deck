@@ -5,15 +5,20 @@ const path = require("path");
 
 function run(scriptName, args = []) {
   return new Promise((resolve, reject) => {
-    console.log(scriptName);
-    console.log(scripts[scriptName]);
+    console.log("Name of script ran:", scriptName);
+
+    if (scripts[scriptName] === undefined)
+      console.error("Script not found, looked for:", scriptName);
+
     const scriptPath = path.join(
       process.cwd(),
       "src",
       "pythonScripts",
       scripts[scriptName],
     );
-    console.log(`Path is: ${scriptPath}`);
+
+    console.log(`Path of script: ${scriptPath}`);
+
     let pyout = spawn("python", [scriptPath, ...args]);
 
     pyout.stdout.on("data", (data) => {
@@ -30,7 +35,7 @@ function run(scriptName, args = []) {
     pyout.on("close", (code) => {
       console.log(`Closed with code: ${code}`);
       if (code !== 0) {
-        console.log("code was rejected");
+        console.log("Script Failed");
         reject(new Error("exited with code:", code));
       }
     });
@@ -40,5 +45,5 @@ function run(scriptName, args = []) {
 async function runScript(scriptName, args = []) {
   return await run(scriptName, args);
 }
-//runScript("audioMute");
+
 module.exports = { runScript };

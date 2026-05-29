@@ -29,8 +29,8 @@ export default function GeneralButton({
     }
   }
 
-  if (id === "main_grid_button") {
-    console.log("made here");
+  // Yes, this is probably not the best designed, but it works, and gets it done,
+  if (id === "MAINGRID") {
     return (
       <Button
         id={id}
@@ -43,13 +43,13 @@ export default function GeneralButton({
         {children}
       </Button>
     );
-  } else if (id === "popup_button") {
+  } else if (id === "PANEL") {
     return (
       <Button id={id} onPress={onPress}>
         {children}
       </Button>
     );
-  } else if (id === "mute_button") {
+  } else if (id === "MUTE") {
     return (
       <Button
         id={id}
@@ -62,7 +62,7 @@ export default function GeneralButton({
         {children}
       </Button>
     );
-  } else if (id === "setAudio") {
+  } else if (id === "SETAUDIO") {
     return (
       <Button
         id={id}
@@ -72,7 +72,10 @@ export default function GeneralButton({
         }}
       />
     );
-  } else if (id === "deafen_button") {
+  } else if (id === "FORWARD") {
+  } else if (id === "BACKWARD") {
+  } else if (id === "PAUSE") {
+  } else if (id === "DEAFENDISCORD") {
     return (
       <Button
         id={id}
