@@ -1,7 +1,7 @@
 const scripts = {
-  muteAudio: "audioMute.py",
-  setAudio: "audioSetVol.py",
-  mediaKey: "multiMedia.py",
+  audioMute: "audioMute.py",
+  audioSetLevel: "audioSetVol.py",
+  multiMedia: "multiMedia.py",
   getIp: "getIp.py",
 };
 

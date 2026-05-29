@@ -54,7 +54,7 @@ export default function GeneralButton({
       <Button
         id={id}
         onPress={() => {
-          sendMessage("muteAudio");
+          sendMessage("audioMute");
           console.log("Mute Audio Button Pressed");
         }}
       >

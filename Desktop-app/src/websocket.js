@@ -3,7 +3,6 @@ const url = require("url");
 const { v4: uuidv4 } = require("uuid");
 const http = require("http");
 const { runScript } = require("./scriptLoader");
-const { scripts } = require("./scripts");
 
 const server = http.createServer();
 const wsServer = new WebSocketServer({ server });
@@ -22,11 +21,13 @@ function getInfo() {
   return { PORT, IP };
 }
 
-function handleMessage(msg) {
+async function handleMessage(msg) {
+  console.log(`Message Receive, the messge: ${msg}`);
   const data = JSON.parse(msg.toString());
 
-  if (scripts[data.type]) {
-    return runScript(scripts[data.type], scripts[data.arg]);
+  if (data.type) {
+    console.log("script ran");
+    return await runScript(data.type, [data.arg]);
   } else {
     console.error("Script not found");
   }

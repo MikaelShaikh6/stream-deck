@@ -6,13 +6,15 @@ const { postMessageToThread } = require("worker_threads");
 
 function run(scriptName, args = []) {
   return new Promise((resolve, reject) => {
+    console.log(scriptName);
+    console.log(scripts[scriptName]);
     const scriptPath = path.join(
       process.cwd(),
       "src",
       "pythonScripts",
       scripts[scriptName],
     );
-
+    console.log(`Path is: ${scriptPath}`);
     let pyout = spawn("python", [scriptPath, ...args]);
 
     pyout.stdout.on("data", (data) => {
@@ -39,5 +41,5 @@ function run(scriptName, args = []) {
 async function runScript(scriptName, args = []) {
   return await run(scriptName, args);
 }
-
+//runScript("audioMute");
 module.exports = { runScript };
