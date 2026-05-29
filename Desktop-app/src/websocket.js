@@ -25,15 +25,36 @@ function getInfo() {
 function handleMessage(msg) {
   const data = JSON.parse(msg.toString());
 
-  if (scripts[data]) {
-    return runScript(scripts[data]);
+  if (scripts[data.type]) {
+    return runScript(scripts[data.type], scripts[data.arg]);
+  } else {
+    console.error("Script not found");
   }
 }
 
 async function connection() {
+  const HEARTBEAT_INTERVAL = 30000;
+  const HEARTBEAT_TIMEOUT = 10000;
+
   IP = (await runScript("getIp")).trim();
 
+  const heartbeatInterval = setInterval(() => {
+    wsServer.clients.forEach((ws) => {
+      if (ws.isAlive === false) {
+        return ws.terminate();
+      }
+      ws.isAlive = false;
+      ws.ping((err) => {
+        if (err) {
+          console.error("Error sending ping", err.message);
+        }
+      });
+    });
+  }, HEARTBEAT_INTERVAL);
+
   wsServer.on("connection", (connection, request) => {
+    connection.isAlive = true;
+
     const { username } = url.parse(request.url, true).query;
 
     if (!username) {
@@ -48,16 +69,26 @@ async function connection() {
       state: {},
     };
 
+    connection.on("pong", () => {
+      connection.isAlive = true;
+      connection.lastPong = Date.now();
+      console.log("got pong");
+    });
+
     connection.on("message", (msg) => {
+      connection.isAlive = true;
       return handleMessage(msg);
     });
 
     connection.on("close", () => {
+      clearInterval(heartbeatInterval);
       console.log(`${users[uuid].username} disconnected`);
       delete connections[uuid];
       delete users[uuid];
     });
   });
+
+  wsServer.on("close", () => clearInterval(heartbeatInterval));
   server.listen(PORT, () => {
     console.log(`Websocket server is running on port: ${PORT}`);
   });

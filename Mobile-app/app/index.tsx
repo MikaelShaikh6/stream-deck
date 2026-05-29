@@ -1,7 +1,8 @@
 //import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+//import WebSocket from "ws";
 import GeneralButton from "./generalButton";
 import Popup from "./popup";
 
@@ -17,6 +18,7 @@ export default function Index() {
   const [gridHeight, setGridHeight] = useState(0);
   const [gridWidth, setGridWidth] = useState(0);
   const [gridButtonsDisabled, setGridButtonsDisabled] = useState(true);
+  const [weblink, setWeblink] = useState("");
 
   const BUTTON_WIDTH = 156;
   const BUTTON_HEIGHT = 96;
@@ -37,7 +39,6 @@ export default function Index() {
 
   const toggleDisableGridButtons = () => {
     // Wrapper function
-    console.log("Grid disabled");
     setGridButtonsDisabled(!gridButtonsDisabled);
     setAudioVisible(false);
     setDisplayVisible(false);
@@ -76,7 +77,36 @@ export default function Index() {
     toggleDisableGridButtons();
   };
 
-  return (
+  const [socket, setSocket] = useState<WebSocket | undefined>();
+  function setConnection(weblink: string) {
+    setWeblink(weblink);
+
+    const ws = new WebSocket(weblink);
+    ws.addEventListener("open", () => {
+      console.log("connected to server");
+    });
+    ws.addEventListener("ping", (data) => {
+      //socket.pong();
+      console.log("got ping");
+    });
+
+    ws.addEventListener("close", (event) => {
+      console.log("Diconnceted with code:", event.code, event.reason);
+      setTimeout(() => setWeblink(""), 3000);
+    });
+    setSocket(ws);
+  }
+
+  return !weblink ? (
+    <View id={"Weblink Page"}>
+      <TextInput
+        onSubmitEditing={(e) => {
+          setConnection(e.nativeEvent.text);
+        }}
+        placeholder="Enter Weblink found on desktop app"
+      />
+    </View>
+  ) : (
     <View className="flex-1 border-4 border-accent">
       <SafeAreaView className="relative flex-1 justify-center items-center bg-background">
         <View
@@ -99,6 +129,7 @@ export default function Index() {
                 return (
                   <GeneralButton
                     key={index}
+                    socket={socket}
                     id={buttonAssignment[index] ?? "main_grid_button"}
                     disabled={gridButtonsDisabled && !buttonAssignment[index]}
                     onPress={() => handleGridButtonPress(index)}
@@ -159,8 +190,8 @@ export default function Index() {
             </Pressable>
           </View>
 
-          <View className="bg-yellow-400">
-            <Text>Hello world 2</Text>
+          <View id={"connection-weblink"} className="bg-yellow-400">
+            <Text>{weblink}</Text>
           </View>
         </View>
       </SafeAreaView>

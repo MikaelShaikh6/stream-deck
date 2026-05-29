@@ -9,6 +9,8 @@ type GeneralButtonProps = {
   button?: string;
   disabled?: boolean;
   children?: ReactNode;
+  socket?: WebSocket;
+  audioLevel?: number;
 };
 
 export default function GeneralButton({
@@ -18,7 +20,15 @@ export default function GeneralButton({
   onPress,
   children,
   button,
+  socket,
+  audioLevel,
 }: GeneralButtonProps) {
+  function sendMessage(msg: string, args: any[] = []) {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({ type: msg, arg: args }));
+    }
+  }
+
   if (id === "main_grid_button") {
     console.log("made here");
     return (
@@ -44,18 +54,30 @@ export default function GeneralButton({
       <Button
         id={id}
         onPress={() => {
-          console.log("this is a mute mutton");
+          sendMessage("muteAudio");
+          console.log("Mute Audio Button Pressed");
         }}
       >
         <Text>Hello world</Text>
         {children}
       </Button>
     );
+  } else if (id === "setAudio") {
+    return (
+      <Button
+        id={id}
+        onPress={() => {
+          sendMessage("setAudio", [audioLevel]);
+          console.log("Set Audio Button Pressed");
+        }}
+      />
+    );
   } else if (id === "deafen_button") {
     return (
       <Button
         id={id}
         onPress={() => {
+          sendMessage("deafenDiscord");
           console.log("this is a deafen button");
         }}
       >

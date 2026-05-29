@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Login from "./Login";
 
 const loadInfo = async () => {
   const info = await window.api.getWSInfo();
@@ -7,11 +8,10 @@ const loadInfo = async () => {
   setIp(info.IP);
 };
 
-loadInfo();
-
 export default function App() {
   const [port, setPort] = useState(0);
   const [ip, setIp] = useState("");
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     const loadInfo = async () => {
@@ -23,9 +23,11 @@ export default function App() {
     loadInfo();
   }, []);
 
-  return (
+  return !username ? (
+    <Login onSubmit={setUsername} />
+  ) : (
     <h1>
-      Enter this link: ws://{ip}:{port}
+      Enter this link: ws://{ip}:{port}?username={username}
     </h1>
   );
 }
