@@ -97,6 +97,11 @@ export default function Index() {
     setSocket(ws);
   }
 
+  function disableAndSetNewButton(id: string) {
+    setNewButton(id);
+    toggleDisableGridButtons();
+  }
+
   return !weblink ? (
     <View id={"Weblink Page"}>
       <TextInput
@@ -113,7 +118,7 @@ export default function Index() {
           className={`${topBar} ${"absolute top-0 h-[90%] overflow-hidden"}`}
         >
           <View
-            id={"main grid"}
+            id={"MAINGRID"}
             className={`${!buttonsPanelVisible && !audioPanelVisible && !displayPanelVisible ? "flex-1" : "hidden"} ${"justify-center items-center"}`}
             onLayout={(e) => {
               setGridHeight(e.nativeEvent.layout.height);
@@ -130,7 +135,7 @@ export default function Index() {
                   <GeneralButton
                     key={index}
                     socket={socket}
-                    id={buttonAssignment[index] ?? "main_grid_button"}
+                    id={buttonAssignment[index] ?? "MAINGRID"}
                     disabled={gridButtonsDisabled && !buttonAssignment[index]}
                     onPress={() => handleGridButtonPress(index)}
                     button={newButton}
@@ -145,27 +150,19 @@ export default function Index() {
           <Popup visible={audioPanelVisible}>
             <GeneralButton
               id={"PANEL"}
-              onPress={() => {
-                setNewButton("MUTE");
-                toggleDisableGridButtons();
-              }}
+              onPress={() => disableAndSetNewButton("MUTE")}
             >
               <Text>Mute Button</Text>
             </GeneralButton>
 
             <GeneralButton
               id={"PANEL"}
-              onPress={() => {
-                setNewButton("SETAUDIO");
-                toggleDisableGridButtons();
-              }}
+              onPress={() => disableAndSetNewButton("SETAUDIO")}
             ></GeneralButton>
 
-            <GeneralButton 
-              id={"FORWARD"}
-              onPress={() => {
-                setNewButton
-              }}
+            <GeneralButton
+              id={"PANEL"}
+              onPress={() => disableAndSetNewButton("FORWARD")}
             ></GeneralButton>
           </Popup>
 
