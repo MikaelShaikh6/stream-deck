@@ -14,9 +14,9 @@ export default function Index() {
   const bottomBar = "w-full h-[10%] bg-accent";
   const topBar = "w-full bg-background";
 
-  const [buttonsVisible, setButtonsVisible] = useState(false);
-  const [displayVisible, setDisplayVisible] = useState(false);
-  const [audioVisible, setAudioVisible] = useState(false);
+  const [buttonsPanelVisible, setButtonsPanelVisible] = useState(false);
+  const [displayPanelVisible, setDisplayPanelVisible] = useState(false);
+  const [audioPanelVisible, setAudioPanelVisible] = useState(false);
   const [gridHeight, setGridHeight] = useState(0);
   const [gridWidth, setGridWidth] = useState(0);
   const [gridButtonsDisabled, setGridButtonsDisabled] = useState(true);
@@ -41,31 +41,30 @@ export default function Index() {
 
   const toggleDisableGridButtons = () => {
     setGridButtonsDisabled(!gridButtonsDisabled);
-    setAudioVisible(false);
-    setDisplayVisible(false);
-    setButtonsVisible(false);
+    setAudioPanelVisible(false);
+    setDisplayPanelVisible(false);
+    setButtonsPanelVisible(false);
   };
 
   const toggleButtons = () => {
-    setAudioVisible(false);
-    setDisplayVisible(false);
-    setButtonsVisible(!buttonsVisible);
+    setAudioPanelVisible(false);
+    setDisplayPanelVisible(false);
+    setButtonsPanelVisible(!buttonsPanelVisible);
   };
 
   const toggleDisplay = () => {
-    setButtonsVisible(false);
-    setAudioVisible(false);
-    setDisplayVisible(!displayVisible);
+    setButtonsPanelVisible(false);
+    setAudioPanelVisible(false);
+    setDisplayPanelVisible(!displayPanelVisible);
   };
 
   const toggleAudio = () => {
-    setButtonsVisible(false);
-    setDisplayVisible(false);
-    setAudioVisible(!audioVisible);
+    setButtonsPanelVisible(false);
+    setDisplayPanelVisible(false);
+    setAudioPanelVisible(!audioPanelVisible);
   };
 
   const [newButton, setNewButton] = useState("");
-
   const [buttonAssignment, setButtonAssignment] = useState<
     Record<number, string>
   >({});
@@ -84,11 +83,11 @@ export default function Index() {
 
     const ws = new WebSocket(weblink);
     ws.addEventListener("open", () => {
-      console.log("connected to server");
+      console.log("Client Connected to Server");
     });
     ws.addEventListener("ping", (data) => {
-      //socket.pong();
-      console.log("got ping");
+      //socket.pong(); // Not needed for browser level
+      console.log("Client got ping");
     });
 
     ws.addEventListener("close", (event) => {
@@ -115,7 +114,7 @@ export default function Index() {
         >
           <View
             id={"main grid"}
-            className={`${!buttonsVisible && !audioVisible && !displayVisible ? "flex-1" : "hidden"} ${"justify-center items-center"}`}
+            className={`${!buttonsPanelVisible && !audioPanelVisible && !displayPanelVisible ? "flex-1" : "hidden"} ${"justify-center items-center"}`}
             onLayout={(e) => {
               setGridHeight(e.nativeEvent.layout.height);
               setGridWidth(e.nativeEvent.layout.width);
@@ -141,26 +140,36 @@ export default function Index() {
             </View>
           </View>
 
-          <Popup visible={buttonsVisible}>
+          <Popup visible={buttonsPanelVisible}></Popup>
+
+          <Popup visible={audioPanelVisible}>
             <GeneralButton
-              id={"popup_button"}
+              id={"PANEL"}
               onPress={() => {
-                setNewButton("mute_button");
+                setNewButton("MUTE");
+                toggleDisableGridButtons();
+              }}
+            >
+              <Text>Mute Button</Text>
+            </GeneralButton>
+
+            <GeneralButton
+              id={"PANEL"}
+              onPress={() => {
+                setNewButton("SETAUDIO");
                 toggleDisableGridButtons();
               }}
             ></GeneralButton>
-            <GeneralButton
-              id={"popup_button"}
+
+            <GeneralButton 
+              id={"FORWARD"}
               onPress={() => {
-                setNewButton("deafen_button");
-                toggleDisableGridButtons();
+                setNewButton
               }}
             ></GeneralButton>
           </Popup>
 
-          <Popup visible={audioVisible}></Popup>
-
-          <Popup visible={displayVisible}></Popup>
+          <Popup visible={displayPanelVisible}></Popup>
         </View>
 
         <View
