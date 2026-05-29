@@ -1,6 +1,6 @@
 const http = require("http");
-//const { URL } = require("url");
-const url = require("url"); // For old method
+const { URL } = require("url");
+//const url = require("url"); // For old method
 const { WebSocketServer } = require("ws");
 const { v4: uuidv4 } = require("uuid");
 const { runScript } = require("./scriptLoader");
@@ -57,10 +57,10 @@ async function connection() {
   wsServer.on("connection", (connection, request) => {
     connection.isAlive = true;
 
-    const { username } = url.parse(request.url, true).query; // Old method, new one not fully tested
-    // let baseURL = "http://" + request.hearders.host + "/";
-    // const { url } = new URL(request.url, baseURL);
-    // const { username } = url.get("username");
+    //const { username } = url.parse(request.url, true).query; // Old method, new one not fully tested
+    let baseURL = "http://" + request.hearders.host + "/";
+    const { url } = new URL(request.url, baseURL);
+    const { username } = url.get("username");
 
     if (!username) {
       connection.close();
