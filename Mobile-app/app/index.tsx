@@ -170,19 +170,19 @@ export default function Index() {
 
           <View id="bottom bar" className="flex-row items-center gap-5">
             <Pressable
-              className={`${optionButtonProp} ${"rounded-20 p-1"}`}
+              className={`${optionButtonProp} ${"rounded-20 p-3"}`}
               onPress={toggleButtons}
             >
               <Text className={`${optionButtonTextProp}`}>Buttons</Text>
             </Pressable>
             <Pressable
-              className={`${optionButtonProp} ${"rounded-20 p-1"}`}
+              className={`${optionButtonProp} ${"rounded-20 p-3"}`}
               onPress={toggleDisplay}
             >
               <Text className={`${optionButtonTextProp}`}>Display</Text>
             </Pressable>
             <Pressable
-              className={`${optionButtonProp} ${"rounded-20 p1"}`}
+              className={`${optionButtonProp} ${"rounded-20 p-3"}`}
               onPress={toggleAudio}
             >
               <Text className={`${optionButtonTextProp}`}>Audio</Text>
