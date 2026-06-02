@@ -36,8 +36,7 @@ export default function GeneralButton({
         id={id}
         disabled={disabled}
         onPress={() => {
-          console.log(id, button);
-          if (onPress) onPress();
+          if (onPress) onPress(); // This is needed
         }}
       >
         {children}
@@ -54,11 +53,11 @@ export default function GeneralButton({
       <Button
         id={id}
         onPress={() => {
-          sendMessage("audioMute");
+          if (socket) sendMessage("audioMute");
           console.log("Mute Audio Button Pressed");
         }}
       >
-        <Text>Hello world</Text>
+        <Text>Mute Button</Text>
         {children}
       </Button>
     );
@@ -67,7 +66,7 @@ export default function GeneralButton({
       <Button
         id={id}
         onPress={() => {
-          sendMessage("setAudio", [audioLevel]);
+          if (socket) sendMessage("setAudio", [audioLevel]);
           console.log("Set Audio Button Pressed");
         }}
       />

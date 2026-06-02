@@ -66,7 +66,7 @@ async function connection() {
       connection.close();
       return;
     }
-
+    console.log(`${username} has connected`);
     // TODO: Unsure if this is needed information to keep
     const uuid = uuidv4();
     connections[uuid] = connection;

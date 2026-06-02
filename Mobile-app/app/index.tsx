@@ -3,7 +3,7 @@
 //import WebSocket from "ws";
 
 import React, { useState } from "react";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Image, Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GeneralButton from "./generalButton";
 import Popup from "./popup";
@@ -78,6 +78,7 @@ export default function Index() {
   };
 
   const [socket, setSocket] = useState<WebSocket | undefined>();
+
   function setConnection(weblink: string) {
     setWeblink(weblink);
 
@@ -102,16 +103,7 @@ export default function Index() {
     toggleDisableGridButtons();
   }
 
-  return !weblink ? (
-    <View id={"Weblink Page"}>
-      <TextInput
-        onSubmitEditing={(e) => {
-          setConnection(e.nativeEvent.text);
-        }}
-        placeholder="Enter Weblink found on desktop app"
-      />
-    </View>
-  ) : (
+  return (
     <View className="flex-1 border-4 border-accent">
       <SafeAreaView className="relative flex-1 justify-center items-center bg-background">
         <View
@@ -197,8 +189,27 @@ export default function Index() {
             </Pressable>
           </View>
 
-          <View id={"connection-weblink"} className="bg-yellow-400">
-            <Text>{weblink}</Text>
+          <View
+            id={"connection-weblink"}
+            className="bg-background rounded-xl p-1"
+          >
+            <View className="flex-row items-center">
+              <TextInput
+                style={{ color: "#B0A990" }}
+                onSubmitEditing={(e) => {
+                  setConnection(e.nativeEvent.text);
+                }}
+                placeholder="Enter Link Here"
+              />
+              <Image
+                source={
+                  weblink
+                    ? require("../assets/images/Basic_green_dot.png")
+                    : require("../assets/images/Basic_red_dot.png")
+                }
+                style={{ width: 15, height: 15 }}
+              />
+            </View>
           </View>
         </View>
       </SafeAreaView>
