@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { Pressable, View } from "react-native";
+import { Pressable, useWindowDimensions, View } from "react-native";
 
 type Props = {
   id: string;
@@ -19,11 +19,13 @@ export function Button({
   boxProp = "w-[154px] h-[96px] flex-grow bg-accent select-none aspect-square rounded-xl mb-2 justify-center items-center border-2 border-darkAccent overflow-clip",
   children,
 }: Props) {
+  const { height, width } = useWindowDimensions();
+
   return (
     <View id={id}>
       <Pressable
         disabled={disabled}
-        className={`${boxProp} ${className}`}
+        className={`w-[${width / 154}%] h-[${height / 96}%] ${boxProp} ${className}`}
         onPress={onPress}
       >
         {children}
