@@ -16,7 +16,7 @@ export function Button({
   disabled = false,
   onPress,
   className,
-  boxProp = "w-[154px] h-[96px] flex-grow bg-accent select-none aspect-square rounded-xl mb-2 justify-center items-center border-2 border-blue overflow-clip",
+  boxProp = "w-[154px] h-[96px] flex-grow bg-accent select-none aspect-square rounded-xl mb-2 justify-center items-center border-2 border-darkAccent overflow-clip",
   children,
 }: Props) {
   return (

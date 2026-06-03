@@ -106,6 +106,7 @@ export default function Index() {
     toggleDisableGridButtons();
     setGridButtonVisibility(true);
   }
+
   return (
     <View className="flex-1 border-4 border-accent">
       <mainGridVisibility.Provider value={gridButtonVisibility}>
@@ -168,25 +169,21 @@ export default function Index() {
           <View
             className={`${bottomBar} ${"absolute bottom-0 flex-row items-center justify-between px-4"}`}
           >
-            <View className="bg-amber-50">
-              <Text>Hello world</Text>
-            </View>
-
-            <View id="bottom bar" className="flex-row items-center gap-5">
+            <View id="bottom bar" className="flex-row items-center gap-1">
               <Pressable
-                className={`${optionButtonProp} ${"rounded-20 p-3"}`}
+                className={`${optionButtonProp} ${"rounded-xl p-2"}`}
                 onPress={toggleButtons}
               >
                 <Text className={`${optionButtonTextProp}`}>Buttons</Text>
               </Pressable>
               <Pressable
-                className={`${optionButtonProp} ${"rounded-20 p-3"}`}
+                className={`${optionButtonProp} ${"rounded-xl p-2"}`}
                 onPress={toggleDisplay}
               >
                 <Text className={`${optionButtonTextProp}`}>Display</Text>
               </Pressable>
               <Pressable
-                className={`${optionButtonProp} ${"rounded-20 p-3"}`}
+                className={`${optionButtonProp} ${"rounded-xl p-2"}`}
                 onPress={toggleAudio}
               >
                 <Text className={`${optionButtonTextProp}`}>Audio</Text>
