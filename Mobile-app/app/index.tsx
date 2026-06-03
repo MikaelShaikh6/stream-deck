@@ -5,6 +5,7 @@
 import React, { useState } from "react";
 import { Image, Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { mainGridVisibility } from "./context/context";
 import GeneralButton from "./generalButton";
 import Popup from "./popup";
 
@@ -19,8 +20,9 @@ export default function Index() {
   const [audioPanelVisible, setAudioPanelVisible] = useState(false);
   const [gridHeight, setGridHeight] = useState(0);
   const [gridWidth, setGridWidth] = useState(0);
-  const [gridButtonsDisabled, setGridButtonsDisabled] = useState(true);
+  const [gridButtonsDisabled, setGridButtonsDisabled] = useState(true); // To begin, buttons are disabled
   const [weblink, setWeblink] = useState("");
+  const [gridButtonVisibility, setGridButtonVisibility] = useState(false); // To begin, buttons are not visible
 
   const BUTTON_WIDTH = 156;
   const BUTTON_HEIGHT = 96;
@@ -75,6 +77,7 @@ export default function Index() {
       [index]: newButton,
     }));
     toggleDisableGridButtons();
+    setGridButtonVisibility(false);
   };
 
   const [socket, setSocket] = useState<WebSocket | undefined>();
@@ -101,118 +104,120 @@ export default function Index() {
   function disableAndSetNewButton(id: string) {
     setNewButton(id);
     toggleDisableGridButtons();
+    setGridButtonVisibility(true);
   }
-
   return (
     <View className="flex-1 border-4 border-accent">
-      <SafeAreaView className="relative flex-1 justify-center items-center bg-background">
-        <View
-          className={`${topBar} ${"absolute top-0 h-[90%] overflow-hidden"}`}
-        >
+      <mainGridVisibility.Provider value={gridButtonVisibility}>
+        <SafeAreaView className="relative flex-1 justify-center items-center bg-background">
           <View
-            id={"MAINGRID"}
-            className={`${!buttonsPanelVisible && !audioPanelVisible && !displayPanelVisible ? "flex-1" : "hidden"} ${"justify-center items-center"}`}
-            onLayout={(e) => {
-              setGridHeight(e.nativeEvent.layout.height);
-              setGridWidth(e.nativeEvent.layout.width);
-            }}
+            className={`${topBar} ${"absolute top-0 h-[90%] overflow-hidden"}`}
           >
             <View
-              className={
-                "flex-row flex-wrap gap-x-8 gap-y-4 justify-center items-center overflow-hidden select-none"
-              }
+              id={"MAINGRID"}
+              className={`${!buttonsPanelVisible && !audioPanelVisible && !displayPanelVisible ? "flex-1" : "hidden"} ${"justify-center items-center"}`}
+              onLayout={(e) => {
+                setGridHeight(e.nativeEvent.layout.height);
+                setGridWidth(e.nativeEvent.layout.width);
+              }}
             >
-              {buttons.map((btn, index) => {
-                return (
-                  <GeneralButton
-                    key={index}
-                    socket={socket}
-                    id={buttonAssignment[index] ?? "MAINGRID"}
-                    disabled={gridButtonsDisabled && !buttonAssignment[index]}
-                    onPress={() => handleGridButtonPress(index)}
-                    button={newButton}
-                  />
-                );
-              })}
+              <View
+                className={
+                  "flex-row flex-wrap gap-x-8 gap-y-4 justify-center items-center overflow-hidden select-none"
+                }
+              >
+                {buttons.map((btn, index) => {
+                  return (
+                    <GeneralButton
+                      key={index}
+                      socket={socket}
+                      id={buttonAssignment[index] ?? "MAINGRID"}
+                      disabled={gridButtonsDisabled && !buttonAssignment[index]}
+                      onPress={() => handleGridButtonPress(index)}
+                      button={newButton}
+                    />
+                  );
+                })}
+              </View>
             </View>
-          </View>
 
-          <Popup visible={buttonsPanelVisible}></Popup>
+            <Popup visible={buttonsPanelVisible}></Popup>
 
-          <Popup visible={audioPanelVisible}>
-            <GeneralButton
-              id={"PANEL"}
-              onPress={() => disableAndSetNewButton("MUTE")}
-            >
-              <Text>Mute Button</Text>
-            </GeneralButton>
+            <Popup visible={audioPanelVisible}>
+              <GeneralButton
+                id={"PANEL"}
+                onPress={() => disableAndSetNewButton("MUTE")}
+              >
+                <Text>Mute Button</Text>
+              </GeneralButton>
 
-            <GeneralButton
-              id={"PANEL"}
-              onPress={() => disableAndSetNewButton("SETAUDIO")}
-            ></GeneralButton>
+              <GeneralButton
+                id={"PANEL"}
+                onPress={() => disableAndSetNewButton("SETAUDIO")}
+              ></GeneralButton>
 
-            <GeneralButton
-              id={"PANEL"}
-              onPress={() => disableAndSetNewButton("FORWARD")}
-            ></GeneralButton>
-          </Popup>
+              <GeneralButton
+                id={"PANEL"}
+                onPress={() => disableAndSetNewButton("FORWARD")}
+              ></GeneralButton>
+            </Popup>
 
-          <Popup visible={displayPanelVisible}></Popup>
-        </View>
-
-        <View
-          className={`${bottomBar} ${"absolute bottom-0 flex-row items-center justify-between px-4"}`}
-        >
-          <View className="bg-amber-50">
-            <Text>Hello world</Text>
-          </View>
-
-          <View id="bottom bar" className="flex-row items-center gap-5">
-            <Pressable
-              className={`${optionButtonProp} ${"rounded-20 p-3"}`}
-              onPress={toggleButtons}
-            >
-              <Text className={`${optionButtonTextProp}`}>Buttons</Text>
-            </Pressable>
-            <Pressable
-              className={`${optionButtonProp} ${"rounded-20 p-3"}`}
-              onPress={toggleDisplay}
-            >
-              <Text className={`${optionButtonTextProp}`}>Display</Text>
-            </Pressable>
-            <Pressable
-              className={`${optionButtonProp} ${"rounded-20 p-3"}`}
-              onPress={toggleAudio}
-            >
-              <Text className={`${optionButtonTextProp}`}>Audio</Text>
-            </Pressable>
+            <Popup visible={displayPanelVisible}></Popup>
           </View>
 
           <View
-            id={"connection-weblink"}
-            className="bg-background rounded-xl p-1"
+            className={`${bottomBar} ${"absolute bottom-0 flex-row items-center justify-between px-4"}`}
           >
-            <View className="flex-row items-center">
-              <TextInput
-                style={{ color: "#B0A990" }}
-                onSubmitEditing={(e) => {
-                  setConnection(e.nativeEvent.text);
-                }}
-                placeholder="Enter Link Here"
-              />
-              <Image
-                source={
-                  weblink
-                    ? require("../assets/images/Basic_green_dot.png")
-                    : require("../assets/images/Basic_red_dot.png")
-                }
-                style={{ width: 15, height: 15 }}
-              />
+            <View className="bg-amber-50">
+              <Text>Hello world</Text>
+            </View>
+
+            <View id="bottom bar" className="flex-row items-center gap-5">
+              <Pressable
+                className={`${optionButtonProp} ${"rounded-20 p-3"}`}
+                onPress={toggleButtons}
+              >
+                <Text className={`${optionButtonTextProp}`}>Buttons</Text>
+              </Pressable>
+              <Pressable
+                className={`${optionButtonProp} ${"rounded-20 p-3"}`}
+                onPress={toggleDisplay}
+              >
+                <Text className={`${optionButtonTextProp}`}>Display</Text>
+              </Pressable>
+              <Pressable
+                className={`${optionButtonProp} ${"rounded-20 p-3"}`}
+                onPress={toggleAudio}
+              >
+                <Text className={`${optionButtonTextProp}`}>Audio</Text>
+              </Pressable>
+            </View>
+
+            <View
+              id={"connection-weblink"}
+              className="bg-background rounded-xl p-1"
+            >
+              <View className="flex-row items-center">
+                <TextInput
+                  style={{ color: "#B0A990" }}
+                  onSubmitEditing={(e) => {
+                    setConnection(e.nativeEvent.text);
+                  }}
+                  placeholder="Enter Link Here"
+                />
+                <Image
+                  source={
+                    weblink
+                      ? require("../assets/images/Basic_green_dot.png")
+                      : require("../assets/images/Basic_red_dot.png")
+                  }
+                  style={{ width: 15, height: 15 }}
+                />
+              </View>
             </View>
           </View>
-        </View>
-      </SafeAreaView>
+        </SafeAreaView>
+      </mainGridVisibility.Provider>
     </View>
   );
 }

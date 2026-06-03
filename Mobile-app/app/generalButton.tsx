@@ -1,6 +1,7 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useContext } from "react";
 import { Text } from "react-native";
 import { Button } from "./button";
+import { mainGridVisibility } from "./context/context";
 
 type GeneralButtonProps = {
   id: string;
@@ -23,16 +24,17 @@ export default function GeneralButton({
   socket,
   audioLevel,
 }: GeneralButtonProps) {
+  const visible = useContext(mainGridVisibility);
   function sendMessage(msg: string, args: any[] = []) {
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify({ type: msg, arg: args }));
     }
   }
-
   // Yes, this is probably not the best designed, but it works, and gets it done,
   if (id === "MAINGRID") {
     return (
       <Button
+        className={!visible ? "invisible" : ""}
         id={id}
         disabled={disabled}
         onPress={() => {
