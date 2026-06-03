@@ -8,7 +8,7 @@ const headerStyles = {
   headerStyle: {
     backgroundColor: colors.accent,
   },
-  headerTintColor: colors.secondaryText,
+  headerTintColor: colors.text,
   headerShadowVisible: false,
 };
 
