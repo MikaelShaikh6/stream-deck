@@ -2,6 +2,7 @@ const { spawn } = require("child_process");
 const { scripts } = require("./scripts");
 const { app } = require("electron");
 const path = require("path");
+const { createJSONFile } = require("./save");
 
 function run(scriptName, args = []) {
   return new Promise((resolve, reject) => {
@@ -9,6 +10,12 @@ function run(scriptName, args = []) {
 
     if (scripts[scriptName] === undefined)
       console.error("Script not found, looked for:", scriptName);
+    if (scriptName === "save") {
+      console.log("Trying to make file");
+      createJSONFile(args);
+      console.log("made after attempt");
+      return;
+    }
 
     const scriptPath = path.join(
       process.cwd(),

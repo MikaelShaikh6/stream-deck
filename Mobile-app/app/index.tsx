@@ -107,6 +107,12 @@ export default function Index() {
     setGridButtonVisibility(true);
   }
 
+  function save(args: Record<number, string>) {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({ type: "save", arg: args }));
+    } else console.log("Message could not be sent, socket is not open.");
+  }
+
   return (
     <View className="flex-1 border-4 border-accent">
       <mainGridVisibility.Provider value={gridButtonVisibility}>
@@ -142,44 +148,52 @@ export default function Index() {
               </View>
             </View>
 
-            <Popup visible={buttonsPanelVisible}></Popup>
+            <>
+              <Popup visible={buttonsPanelVisible}></Popup>
+              <Popup visible={audioPanelVisible}>
+                <GeneralButton
+                  id={"PANEL"}
+                  onPress={() => disableAndSetNewButton("MUTE")}
+                >
+                  <Text>Mute Button</Text>
+                </GeneralButton>
 
-            <Popup visible={audioPanelVisible}>
-              <GeneralButton
-                id={"PANEL"}
-                onPress={() => disableAndSetNewButton("MUTE")}
-              >
-                <Text>Mute Button</Text>
-              </GeneralButton>
+                <GeneralButton
+                  id={"PANEL"}
+                  onPress={() => disableAndSetNewButton("SETAUDIO")}
+                >
+                  <Text>Set Audio Button</Text>
+                </GeneralButton>
 
-              <GeneralButton
-                id={"PANEL"}
-                onPress={() => disableAndSetNewButton("SETAUDIO")}
-              >
-                <Text>Set Audio Button</Text>
-              </GeneralButton>
+                <GeneralButton
+                  id={"PANEL"}
+                  onPress={() => disableAndSetNewButton("FORWARD")}
+                >
+                  <Text>Skip Forward</Text>
+                </GeneralButton>
 
-              <GeneralButton
-                id={"PANEL"}
-                onPress={() => disableAndSetNewButton("FORWARD")}
-              >
-                <Text>Skip Forward</Text>
-              </GeneralButton>
-
-              <GeneralButton
-                id={"SAVE"}
-                onPress={() => disableAndSetNewButton("SAVE")}
-              >
-                <Text>Save</Text>
-              </GeneralButton>
-            </Popup>
-
-            <Popup visible={displayPanelVisible}></Popup>
+                <GeneralButton
+                  id={"SAVE"}
+                  onPress={() => disableAndSetNewButton("SAVE")}
+                >
+                  <Text>Save</Text>
+                </GeneralButton>
+              </Popup>
+              <Popup visible={displayPanelVisible}></Popup>
+            </>
           </View>
 
           <View
             className={`${bottomBar} ${"absolute bottom-0 flex-row items-center justify-between px-4"}`}
           >
+            <Pressable
+              id="Save button"
+              onPress={() => {
+                save(buttonAssignment);
+              }}
+            >
+              <Text>Save</Text>
+            </Pressable>
             <View id="bottom bar" className="flex-row items-center gap-1">
               <Pressable
                 className={`${optionButtonProp} ${"rounded-xl p-2"}`}

@@ -2,7 +2,6 @@ import React, { ReactNode, useContext } from "react";
 import { Text } from "react-native";
 import { Button } from "./button";
 import { mainGridVisibility } from "./context/context";
-import { writeFile } from "./save";
 
 type GeneralButtonProps = {
   id: string;
@@ -71,17 +70,6 @@ export default function GeneralButton({
         onPress={() => {
           if (socket) sendMessage("setAudio", [audioLevel]);
           console.log("Set Audio Button Pressed");
-        }}
-      >
-        {children}
-      </Button>
-    );
-  } else if (id === "SAVE") {
-    return (
-      <Button
-        id={id}
-        onPress={async () => {
-          await writeFile();
         }}
       >
         {children}
