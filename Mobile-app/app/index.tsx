@@ -155,12 +155,23 @@ export default function Index() {
               <GeneralButton
                 id={"PANEL"}
                 onPress={() => disableAndSetNewButton("SETAUDIO")}
-              ></GeneralButton>
+              >
+                <Text>Set Audio Button</Text>
+              </GeneralButton>
 
               <GeneralButton
                 id={"PANEL"}
                 onPress={() => disableAndSetNewButton("FORWARD")}
-              ></GeneralButton>
+              >
+                <Text>Skip Forward</Text>
+              </GeneralButton>
+
+              <GeneralButton
+                id={"SAVE"}
+                onPress={() => disableAndSetNewButton("SAVE")}
+              >
+                <Text>Save</Text>
+              </GeneralButton>
             </Popup>
 
             <Popup visible={displayPanelVisible}></Popup>
