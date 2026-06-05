@@ -5,7 +5,7 @@ export async function createJSONFile(data) {
   const jsonString = JSON.stringify(data[0]);
   console.log("made create function");
 
-  fs.writeFileSync("data.json", jsonString);
+  fs.writeFileSync("./data/data.json", jsonString);
 
   console.log("made past");
 }
