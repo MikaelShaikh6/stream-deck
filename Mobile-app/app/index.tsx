@@ -66,6 +66,26 @@ export default function Index() {
     setAudioPanelVisible(!audioPanelVisible);
   };
 
+  function save(args: Record<number, string>) {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({ type: "save", arg: args }));
+    } else console.log("Save request could not be sent, SOCKET ERROR");
+  }
+
+  function load(ws?: WebSocket) {
+    const target = ws ?? socket;
+
+    if (target && target.readyState === WebSocket.OPEN) {
+      target.send(JSON.stringify({ type: "load", arg: [] }));
+    } else {
+      console.log("Socket Error");
+      if (!target) console.log("Socket does not exist");
+      else if (target.readyState !== WebSocket.OPEN) {
+        console.log("Socket not in ready state");
+      }
+    }
+  }
+
   const [newButton, setNewButton] = useState("");
   const [buttonAssignment, setButtonAssignment] = useState<
     Record<number, string>
@@ -84,12 +104,13 @@ export default function Index() {
 
   function setConnection(weblink: string) {
     setWeblink(weblink);
-
     const ws = new WebSocket(weblink);
 
     ws.addEventListener("open", () => {
       console.log("Client Connected to Server");
-      load();
+      setSocket(ws);
+      console.log("socket:", socket);
+      ws.send(JSON.stringify({ type: "load", arg: [] })); // This has to be direct to ws
     });
 
     ws.addEventListener("ping", (data) => {
@@ -107,26 +128,12 @@ export default function Index() {
       console.log("Diconnceted with code:", event.code, event.reason);
       setTimeout(() => setWeblink(""), 3000);
     });
-    setSocket(ws);
   }
   function disableAndSetNewButton(id: string) {
     setNewButton(id);
     toggleDisableGridButtons();
     setGridButtonVisibility(true);
   }
-
-  function save(args: Record<number, string>) {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({ type: "save", arg: args }));
-    } else console.log("Save request could not be sent, SOCKET ERROR");
-  }
-
-  function load() {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({ type: "load", arg: [] }));
-    } else console.log("Load request could not be sent, socket ERROR");
-  }
-
   return (
     <View className="flex-1 border-4 border-accent">
       <mainGridVisibility.Provider value={gridButtonVisibility}>
