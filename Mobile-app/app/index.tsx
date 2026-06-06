@@ -10,7 +10,7 @@ import GeneralButton from "./generalButton";
 import Popup from "./popup";
 
 export default function Index() {
-  const optionButtonProp = "hover:bg-black/10";
+  const optionButtonProp = "hover:bg-hover";
   const optionButtonTextProp = "select-none color-text text-center text-base";
   const bottomBar = "w-full h-[10%] bg-accent";
   const topBar = "w-full bg-background";
@@ -86,12 +86,21 @@ export default function Index() {
     setWeblink(weblink);
 
     const ws = new WebSocket(weblink);
+
     ws.addEventListener("open", () => {
       console.log("Client Connected to Server");
+      load();
     });
+
     ws.addEventListener("ping", (data) => {
       //socket.pong(); // Not needed for browser level
       console.log("Client got ping");
+    });
+
+    ws.addEventListener("message", (event) => {
+      console.log("Before parse:", event.data);
+      setButtonAssignment(JSON.parse(event.data));
+      console.log("After parse:", JSON.parse(event.data));
     });
 
     ws.addEventListener("close", (event) => {
@@ -100,7 +109,6 @@ export default function Index() {
     });
     setSocket(ws);
   }
-
   function disableAndSetNewButton(id: string) {
     setNewButton(id);
     toggleDisableGridButtons();
@@ -110,7 +118,13 @@ export default function Index() {
   function save(args: Record<number, string>) {
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify({ type: "save", arg: args }));
-    } else console.log("Message could not be sent, socket is not open.");
+    } else console.log("Save request could not be sent, SOCKET ERROR");
+  }
+
+  function load() {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({ type: "load", arg: [] }));
+    } else console.log("Load request could not be sent, socket ERROR");
   }
 
   return (
@@ -171,13 +185,6 @@ export default function Index() {
                 >
                   <Text>Skip Forward</Text>
                 </GeneralButton>
-
-                <GeneralButton
-                  id={"SAVE"}
-                  onPress={() => disableAndSetNewButton("SAVE")}
-                >
-                  <Text>Save</Text>
-                </GeneralButton>
               </Popup>
               <Popup visible={displayPanelVisible}></Popup>
             </>
@@ -186,14 +193,22 @@ export default function Index() {
           <View
             className={`${bottomBar} ${"absolute bottom-0 flex-row items-center justify-between px-4"}`}
           >
-            <Pressable
-              id="Save button"
-              onPress={() => {
-                save(buttonAssignment);
-              }}
-            >
-              <Text>Save</Text>
-            </Pressable>
+            <View className="flex-col gap-0">
+              <Pressable
+                id="Save button"
+                className="hover:bg-hover p-2 rounded-xl"
+                onPress={() => save(buttonAssignment)}
+              >
+                <Text className="color-text">Save</Text>
+              </Pressable>
+              <Pressable
+                id="Load Button"
+                className="hover:bg-hover p-2 rounded-xl"
+                onPress={() => load()}
+              >
+                <Text className="color-text">Load</Text>
+              </Pressable>
+            </View>
             <View id="bottom bar" className="flex-row items-center gap-1">
               <Pressable
                 className={`${optionButtonProp} ${"rounded-xl p-2"}`}

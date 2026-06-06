@@ -29,7 +29,9 @@ async function handleMessage(msg) {
 
   if (data.type) {
     console.log(`Running ${data.type} script, with args: ${data.arg}`);
-    return await runScript(data.type, [data.arg]);
+    const scriptOut = await runScript(data.type, [data.arg]);
+    console.log(`Output of ${data.type} script: ${scriptOut}`);
+    return scriptOut;
   } else {
     console.error(`${data.type} script with arg: ${data.arg} not found`);
   }
@@ -84,9 +86,11 @@ async function connection() {
       console.log("Server ponged");
     });
 
-    connection.on("message", (msg) => {
+    connection.on("message", async (msg) => {
       connection.isAlive = true;
-      return handleMessage(msg);
+      const result = await handleMessage(msg);
+      if (result) connection.send(result);
+      return;
     });
 
     connection.on("close", () => {

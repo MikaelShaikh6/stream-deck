@@ -2,19 +2,26 @@ const { spawn } = require("child_process");
 const { scripts } = require("./scripts");
 const { app } = require("electron");
 const path = require("path");
-const { createJSONFile } = require("./save");
+const { createJSONFile, loadJSONFile } = require("./save");
 
 function run(scriptName, args = []) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     console.log("Name of script ran:", scriptName);
 
-    if (scripts[scriptName] === undefined)
-      console.error("Script not found, looked for:", scriptName);
     if (scriptName === "save") {
       console.log("Trying to make file");
       createJSONFile(args);
-      console.log("made after attempt");
+      resolve("");
       return;
+    } else if (scriptName === "load") {
+      console.log("Trying to read save");
+      const data = await loadJSONFile();
+      console.log("File had:", data);
+      resolve(data);
+      return;
+    } else if (scripts[scriptName] === undefined) {
+      console.error("Script not found, looked for:", scriptName);
+      reject();
     }
 
     const scriptPath = path.join(
@@ -37,6 +44,7 @@ function run(scriptName, args = []) {
 
     pyout.stderr.on("data", (data) => {
       console.error(`stderr: ${data}`);
+      reject(data);
     });
 
     pyout.on("close", (code) => {
