@@ -4,6 +4,10 @@
 data/*
 data/
 
+# For later
+Website/*
+Website/
+
 # dependencies
 node_modules/
 
