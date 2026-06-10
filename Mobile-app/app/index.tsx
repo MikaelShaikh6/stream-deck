@@ -23,6 +23,7 @@ export default function Index() {
   const [gridButtonsDisabled, setGridButtonsDisabled] = useState(true); // To begin, buttons are disabled
   const [weblink, setWeblink] = useState("");
   const [gridButtonVisibility, setGridButtonVisibility] = useState(false); // To begin, buttons are not visible
+  const [socket, setSocket] = useState<WebSocket | undefined>();
 
   const BUTTON_WIDTH = 156;
   const BUTTON_HEIGHT = 96;
@@ -92,6 +93,7 @@ export default function Index() {
   >({});
 
   const handleGridButtonPress = (index: number) => {
+    console.log("NewButton value: ", newButton);
     setButtonAssignment((prev) => ({
       ...prev,
       [index]: newButton,
@@ -100,7 +102,6 @@ export default function Index() {
     setGridButtonVisibility(false);
   };
 
-  const [socket, setSocket] = useState<WebSocket | undefined>();
 
   function setConnection(weblink: string) {
     setWeblink(weblink);

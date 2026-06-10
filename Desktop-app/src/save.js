@@ -19,5 +19,5 @@ export async function createJSONFile(data) {
 
 export async function loadJSONFile() {
   if (fs.existsSync(path)) return fs.readFileSync(path).toString();
-  else return "";
+  else return "Unable to Load File";
 }

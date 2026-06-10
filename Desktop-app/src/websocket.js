@@ -83,6 +83,7 @@ async function connection() {
     connection.on("pong", () => {
       connection.isAlive = true;
       connection.lastPong = Date.now();
+      connection.ping();
       console.log("Server ponged");
     });
 

@@ -1,5 +1,5 @@
 import React, { ReactNode, useContext } from "react";
-import { Text } from "react-native";
+import { Text, TextInput } from "react-native";
 import { Button } from "./button";
 import { mainGridVisibility } from "./context/context";
 
@@ -51,6 +51,7 @@ export default function GeneralButton({
       </Button>
     );
   } else if (id === "MUTE") {
+    console.log("Rendering MUTE button");
     return (
       <Button
         id={id}
@@ -72,6 +73,8 @@ export default function GeneralButton({
           console.log("Set Audio Button Pressed");
         }}
       >
+        <TextInput placeholder="Enter Value Here">
+        </TextInput>
         {children}
       </Button>
     );
