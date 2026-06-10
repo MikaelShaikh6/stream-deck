@@ -120,9 +120,13 @@ export default function Index() {
     });
 
     ws.addEventListener("message", (event) => {
-      console.log("Before parse:", event.data);
-      setButtonAssignment(JSON.parse(event.data));
-      console.log("After parse:", JSON.parse(event.data));
+      console.log("Client got a message", event.data);
+      if (event.type) {
+        if (event.type === "load_data") {
+          console.log("The message was:", event.data);
+          setButtonAssignment(JSON.parse(event.data));
+        }
+      }
     });
 
     ws.addEventListener("close", (event) => {

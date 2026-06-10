@@ -26,7 +26,6 @@ function getInfo() {
 async function handleMessage(msg) {
   console.log(`Message Receive, messge: ${msg}`);
   const data = JSON.parse(msg.toString());
-
   if (data.type) {
     console.log(`Running ${data.type} script, with args: ${data.arg}`);
     const scriptOut = await runScript(data.type, [data.arg]);
@@ -83,13 +82,17 @@ async function connection() {
     connection.on("pong", () => {
       connection.isAlive = true;
       connection.lastPong = Date.now();
-      connection.ping();
       console.log("Server ponged");
     });
 
     connection.on("message", async (msg) => {
       connection.isAlive = true;
       const result = await handleMessage(msg);
+
+      if (msg === "load" && result) {
+        connection.send(JSON.stringify({type: "load_data", data: result}));
+        return;
+      }
       if (result) connection.send(result);
       return;
     });

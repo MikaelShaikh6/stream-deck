@@ -13,6 +13,7 @@ function run(scriptName, args = []) {
       createJSONFile(args);
       resolve("");
       return;
+
     } else if (scriptName === "load") {
       console.log("Trying to read save");
       const data = await loadJSONFile();
