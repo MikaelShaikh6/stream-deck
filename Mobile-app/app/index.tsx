@@ -131,7 +131,7 @@ export default function Index() {
 
     ws.addEventListener("close", (event) => {
       console.log("Diconnceted with code:", event.code, event.reason);
-      setTimeout(() => setWeblink(""), 3000);
+      setTimeout(() => setWeblink(""), 300);
     });
   }
   function disableAndSetNewButton(id: string) {
@@ -168,7 +168,9 @@ export default function Index() {
                       disabled={gridButtonsDisabled && !buttonAssignment[index]}
                       onPress={() => handleGridButtonPress(index)}
                       button={newButton}
-                    />
+                      >
+                      <Text>Click Me!</Text>
+                    </GeneralButton>
                   );
                 })}
               </View>
@@ -256,7 +258,7 @@ export default function Index() {
                 />
                 <Image
                   source={
-                    weblink
+                    weblink && (socket ? socket.readyState === WebSocket.OPEN : false)
                       ? require("../assets/images/Basic_green_dot.png")
                       : require("../assets/images/Basic_red_dot.png")
                   }
