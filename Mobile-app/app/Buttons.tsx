@@ -2,7 +2,7 @@ import React, { ReactNode, useContext, useState, useEffect } from "react";
 import { View, Text, TextInput } from "react-native";
 import { Button } from "./button";
 import { mainGridVisibility } from "./context/context";
-import { audioData, addData } from "./data/data";
+import { audioData, addData } from "./data/audioData";
 
 type GeneralButtonProps = {
   id: string;
