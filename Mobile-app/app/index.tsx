@@ -2,12 +2,13 @@
 //import Ionicons from '@expo/vector-icons/Ionicons';
 //import WebSocket from "ws";
 
-import React, { useState } from "react";
+import React, { useState, } from "react";
 import { Image, Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { mainGridVisibility } from "./context/context";
-import GeneralButton from "./generalButton";
+import GeneralButton from "./Buttons";
 import Popup from "./popup";
+import { audioData, setAudioData } from "./data/data";
 
 export default function Index() {
   const optionButtonProp = "hover:bg-hover";
@@ -67,9 +68,13 @@ export default function Index() {
     setAudioPanelVisible(!audioPanelVisible);
   };
 
-  function save(args: Record<number, string>) {
+  function save(args: Record<number, any>) {
+    console.log("Attempting to save...");
+    const saveData = { arg: args, audioData: audioData };
+
     if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({ type: "save", arg: args }));
+      console.log("Save request sent sucessfully");
+      socket.send(JSON.stringify({ type: "save", data: saveData }));
     } else console.log("Save request could not be sent, SOCKET ERROR");
   }
 
@@ -77,7 +82,7 @@ export default function Index() {
     const target = ws ?? socket;
 
     if (target && target.readyState === WebSocket.OPEN) {
-      target.send(JSON.stringify({ type: "load", arg: [] }));
+      target.send(JSON.stringify({ type: "load", data: [] }));
     } else {
       console.log("Socket Error");
       if (!target) console.log("Socket does not exist");
@@ -111,22 +116,32 @@ export default function Index() {
       console.log("Client Connected to Server");
       setSocket(ws);
       console.log("socket:", socket);
-      ws.send(JSON.stringify({ type: "load", arg: [] })); // This has to be direct to ws
+      ws.send(JSON.stringify({ type: "load", data: [] })); // This has to be direct to ws
     });
 
-    ws.addEventListener("ping", (data) => {
+    ws.addEventListener("ping", (_) => {
       //socket.pong(); // Not needed for browser level
       console.log("Client got ping");
     });
 
     ws.addEventListener("message", (event) => {
-      console.log("Client got a message", event.data);
-      if (event.type) {
-        if (event.type === "load_data") {
-          console.log("The message was:", event.data);
-          setButtonAssignment(JSON.parse(event.data));
-        }
-      }
+      console.log("Event parms: ", "Name:", event.type, "Data:", event.data);
+      const msg = JSON.parse(event.data);
+      console.log("Client got a message", msg.type, ":", msg.data);
+      if (msg.type) {
+        if (msg.type === "load_data") {
+          console.log("The message was:", msg.data);
+          const data = typeof msg.data === "string" ? JSON.parse(msg.data) : msg.data;
+          if (data.arg)
+            setButtonAssignment(data.arg);
+          else console.log(`No args sent by ${msg.type}`);
+
+          if (data.audioData)
+            setAudioData(data.audioData);
+          else console.log(`No audioData send by ${msg.type}`);
+
+        } else console.log("Event type not found");
+      } else console.log("Event not have a type");
     });
 
     ws.addEventListener("close", (event) => {
@@ -139,6 +154,9 @@ export default function Index() {
     toggleDisableGridButtons();
     setGridButtonVisibility(true);
   }
+
+  const MAX_BUTTONS = 500;
+
   return (
     <View className="flex-1 border-4 border-accent">
       <mainGridVisibility.Provider value={gridButtonVisibility}>
@@ -159,23 +177,22 @@ export default function Index() {
                   "flex-row flex-wrap gap-x-8 gap-y-4 justify-center items-center overflow-hidden select-none"
                 }
               >
-                {buttons.map((btn, index) => {
+                {buttons.map((_, index) => {
                   return (
                     <GeneralButton
                       key={index}
+                      buttonIndex={index}
                       socket={socket}
                       id={buttonAssignment[index] ?? "MAINGRID"}
                       disabled={gridButtonsDisabled && !buttonAssignment[index]}
                       onPress={() => handleGridButtonPress(index)}
-                      button={newButton}
-                      >
+                    >
                       <Text>Click Me!</Text>
                     </GeneralButton>
                   );
                 })}
               </View>
             </View>
-
             <>
               <Popup visible={buttonsPanelVisible}></Popup>
               <Popup visible={audioPanelVisible}>
@@ -207,7 +224,7 @@ export default function Index() {
           <View
             className={`${bottomBar} ${"absolute bottom-0 flex-row items-center justify-between px-4"}`}
           >
-            <View className="flex-col gap-0">
+            <View id="Save and Load Buttons" className="flex-col gap-0">
               <Pressable
                 id="Save button"
                 className="hover:bg-hover p-2 rounded-xl"
@@ -223,7 +240,8 @@ export default function Index() {
                 <Text className="color-text">Load</Text>
               </Pressable>
             </View>
-            <View id="bottom bar" className="flex-row items-center gap-1">
+
+            <View id="Three class buttons" className="flex-row items-center gap-1">
               <Pressable
                 className={`${optionButtonProp} ${"rounded-xl p-2"}`}
                 onPress={toggleButtons}
@@ -269,6 +287,6 @@ export default function Index() {
           </View>
         </SafeAreaView>
       </mainGridVisibility.Provider>
-    </View>
+    </View >
   );
 }

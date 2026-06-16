@@ -24,15 +24,14 @@ function getInfo() {
 }
 
 async function handleMessage(msg) {
-  console.log(`Message Receive, messge: ${msg}`);
-  const data = JSON.parse(msg.toString());
-  if (data.type) {
-    console.log(`Running ${data.type} script, with args: ${data.arg}`);
-    const scriptOut = await runScript(data.type, [data.arg]);
-    console.log(`Output of ${data.type} script: ${scriptOut}`);
+  console.log(`Sever message Receive: ${msg}`);
+  if (msg.type) {
+    console.log(`Running ${msg.type} script, with args: ${msg.data.arg}`);
+    const scriptOut = await runScript(msg.type, [msg.data]);
+    console.log(`Output of ${msg.type} script: ${scriptOut}`);
     return scriptOut;
   } else {
-    console.error(`${data.type} script with arg: ${data.arg} not found`);
+    console.error(`${msg.type} script with arg: ${msg.arg} not found`);
   }
 }
 
@@ -59,6 +58,7 @@ async function connection() {
     connection.isAlive = true;
 
     const { username } = url.parse(request.url, true).query; // Old method, new one not fully tested
+
 
     // let baseURL = "http://" + request.headers.host + "/";
     // const url = new URL(request.url, baseURL);
@@ -87,13 +87,16 @@ async function connection() {
 
     connection.on("message", async (msg) => {
       connection.isAlive = true;
-      const result = await handleMessage(msg);
+      console.log("Message recieved:", msg);
+      msg = JSON.parse(msg); // Format message
+      console.log("Message parsed:", msg);
 
-      if (msg === "load" && result) {
-        connection.send(JSON.stringify({type: "load_data", data: result}));
+      const result = await handleMessage(msg);
+      if (msg.type === "load" && result) {
+        connection.send(JSON.stringify({ type: "load_data", data: result }));
         return;
       }
-      if (result) connection.send(result);
+      console.log("No return message on recieved message: ", msg.type);
       return;
     });
 

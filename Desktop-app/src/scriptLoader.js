@@ -13,16 +13,11 @@ function run(scriptName, args = []) {
       createJSONFile(args);
       resolve("");
       return;
-
     } else if (scriptName === "load") {
       console.log("Trying to read save");
+
       const data = await loadJSONFile();
 
-      if (data === {}) {
-        console.log("file was empty");
-        resolve();
-        return;
-      }
       console.log("File had:", data);
       resolve(data);
       return;

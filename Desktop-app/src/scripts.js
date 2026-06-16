@@ -1,6 +1,6 @@
-const scripts = {
+export const scripts = {
   audioMute: "audioMute.py",
-  audioSetLevel: "audioSetVol.py",
+  setAudio: "setAudio.py",
   multiMedia: "multiMedia.py",
   getIp: "getIp.py",
 };
